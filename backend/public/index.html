@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>IRCTC</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo-section">
+          <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>IRCTC</h1>
+        </div>
+        <nav>
+          <a href="index.html" class="nav-link active" id="homeLink">Home</a>
+          <a href="login.html" class="nav-link" id="loginLink">Login</a>
+        </nav>
+      </div>
+    </header>
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+      <div class="menu-item">
+        <div class="menu-main" data-menu="trains">
+          TRAINS <span class="arrow">▼</span>
+        </div>
+        <div class="submenu" id="trains-submenu">
+          <a href="#" class="submenu-item">Book Now</a>
+          <a href="#" class="submenu-item">PNR Enquiry</a>
+          <a href="#" class="submenu-item">Train Schedule</a>
+        </div>
+      </div>
+
+
+      <div class="menu-item">
+        <a href="#" class="menu-main">CONTACT US</a>
+      </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <main class="main-content">
+      <div class="welcome-container">
+        <h2>Welcome to IRCTC</h2>
+        <p>Book your train tickets easily and securely.</p>
+        <!-- <div class="action-buttons">
+          <a href="login.html" class="btn">Login</a>
+          <a href="register.html" class="btn">Register</a>
+        </div> -->
+      </div>
+    </main>
+
+    <footer class="footer"></footer>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>

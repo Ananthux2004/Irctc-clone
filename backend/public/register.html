@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>IRCTC - Register</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo-section">
+          <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>IRCTC</h1>
+        </div>
+        <nav>
+          <a href="index.html" class="nav-link" id="homeLink">Home</a>
+          <a href="login.html" class="nav-link" id="loginLink">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Side Menu -->
+    <div class="side-menu" id="sideMenu">
+      <div class="menu-item">
+        <div class="menu-main" data-menu="trains">
+          TRAINS <span class="arrow">▼</span>
+        </div>
+        <div class="submenu" id="trains-submenu">
+          <a href="#" class="submenu-item">Book Now</a>
+          <a href="#" class="submenu-item">PNR Enquiry</a>
+          <a href="#" class="submenu-item">Train Schedule</a>
+        </div>
+      </div>
+
+
+      <div class="menu-item">
+        <a href="#" class="menu-main">CONTACT US</a>
+      </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main class="main-content">
+      <div class="register-container">
+        <h2>Create Account</h2>
+        <form id="registerForm" class="register-form">
+          <div class="input-group">
+            <label for="fullname">Full Name</label>
+            <input
+              type="text"
+              id="fullname"
+              name="fullname"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Choose a username"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email address"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Choose a password"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+
+          <div class="input-group">
+            <label for="mobile">Mobile Number</label>
+            <div class="mobile-container">
+              <select
+                id="countryCode"
+                name="countryCode"
+                class="country-select"
+                required
+              >
+                <option value="+91">+91 - India</option>
+                <option value="+1">+1 - USA/Canada</option>
+                <option value="+44">+44 - UK</option>
+                <option value="+33">+33 - France</option>
+                <option value="+49">+49 - Germany</option>
+              </select>
+              <input
+                type="tel"
+                id="mobile"
+                name="mobile"
+                placeholder="Enter your mobile number"
+                required
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="login-btn">Register</button>
+
+          <div class="form-links">
+            <a href="login.html" class="link">Already have an account? Login</a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="footer"></footer>
+
+    <script src="assets/script.js"></script>
+  </body>
+</html>
