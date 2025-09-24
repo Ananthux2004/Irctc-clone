@@ -27,7 +27,7 @@ const db = async () => {
 app.use(express.static(path.join(__dirname, "public")));
 
 // API routes
-app.use('/api/users', userRoutes);
+app.use("/api/users", userRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
@@ -45,7 +45,7 @@ app.get("/users", async (req, res) => {
 });
 app.get("/users/:id", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);;
+    const user = await User.findById(req.params.id);
     res.json(user);
   } catch (err) {
     console.error(err);

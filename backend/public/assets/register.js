@@ -47,22 +47,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobile = mobileInput.value.trim();
 
     // Check if there are any validation errors
-    const hasErrors = Array.from(document.querySelectorAll('.error-message')).some(
-      error => error.textContent !== ''
-    );
+    const hasErrors = Array.from(
+      document.querySelectorAll(".error-message")
+    ).some((error) => error.textContent !== "");
 
     // Check for empty fields
-    const hasEmptyFields = !username || !fullname || !password || !confirmPassword || !email || !mobile;
+    const hasEmptyFields =
+      !username ||
+      !fullname ||
+      !password ||
+      !confirmPassword ||
+      !email ||
+      !mobile;
 
     if (hasEmptyFields) {
       console.log("Validation failed: empty fields");
-      alert('Please fill in all fields');
+      alert("Please fill in all fields");
       return;
     }
 
     if (hasErrors) {
       console.log("Validation failed: errors present");
-      alert('Please fix all validation errors before submitting');
+      alert("Please fix all validation errors before submitting");
       return;
     }
 
@@ -73,40 +79,42 @@ document.addEventListener("DOMContentLoaded", function () {
       password,
       email,
       mobile,
-      countryCode: "+91" // Adding default country code for India
+      countryCode: "+91", // Adding default country code for India
     };
 
     // Send registration request
-    fetch('/api/users/register', {
-      method: 'POST',
+    fetch("/api/users/register", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(userData)
+      body: JSON.stringify(userData),
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Show success message
-        alert('Registration successful! Please login.');
-        // Clear form and reset validation
-        registerForm.reset();
-        document.querySelectorAll(".error-message").forEach((error) => error.classList.remove("show"));
-        document.querySelectorAll("input").forEach((input) => {
-          input.classList.remove("error", "valid");
-        });
-        passwordStrength.textContent = "";
-        // Redirect to login page
-        window.location.href = '/login.html';
-      } else {
-        // Show error message
-        alert(data.message || 'Registration failed. Please try again.');
-      }
-    })
-    .catch(error => {
-      console.error('Registration error:', error);
-      alert('An error occurred during registration. Please try again.');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          // Show success message
+          alert("Registration successful! Please login.");
+          // Clear form and reset validation
+          registerForm.reset();
+          document
+            .querySelectorAll(".error-message")
+            .forEach((error) => error.classList.remove("show"));
+          document.querySelectorAll("input").forEach((input) => {
+            input.classList.remove("error", "valid");
+          });
+          passwordStrength.textContent = "";
+          // Redirect to login page
+          window.location.href = "/login.html";
+        } else {
+          // Show error message
+          alert(data.message || "Registration failed. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Registration error:", error);
+        alert("An error occurred during registration. Please try again.");
+      });
   });
 
   // Function to run all validations on submit
