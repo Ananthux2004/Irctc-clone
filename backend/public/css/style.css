@@ -24,7 +24,7 @@ body {
 .header {
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.514);
-  padding: 0.75rem 0;
+  padding: 0.9rem 0;
   margin: 0;
 }
 
@@ -76,7 +76,7 @@ body {
 }
 
 .header h1 {
-  color: #e33e2b;
+  color: #10098b;
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
@@ -85,8 +85,10 @@ body {
 
 nav {
   display: flex;
-  gap: 2rem;
-  align-items: center;
+  gap: 3.5rem;
+  align-items: bottom;
+  font-size: 1.6rem;
+  min-height: 70px;
 }
 
 .nav-link {
@@ -96,6 +98,11 @@ nav {
   font-size: 0.9rem;
   transition: color 0.3s ease;
   padding: 0.25rem 0;
+  height: 70px !important;
+  width: auto;
+  max-width: 140px;
+  display: flex;
+  align-items: flex-end;
 }
 
 .nav-link:hover {
