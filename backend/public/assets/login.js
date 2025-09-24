@@ -16,18 +16,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Show login attempt (for demonstration)
-        alert(
-            "Login Attempt:\n" +
-            "Username: " + username + "\n" +
-            "Password: " + "*".repeat(password.length)
-        );
-
-        // Clear form
-        loginForm.reset();
-
-        // Redirect to home page
-        window.location.href = '/index.html';
+        // Send login request
+        fetch('/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Save user session data
+                session.saveSession(data.user);
+                // Redirect to index page
+                window.location.href = '/index.html';
+            } else {
+                alert(data.message || 'Login failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Login error:', error);
+            alert('An error occurred during login. Please try again.');
+        });
     });
 
     // Add field validation
