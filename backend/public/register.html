@@ -1,10 +1,11 @@
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>IRCTC - Register</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/register.css">
+    
   </head>
   <body>
     <header class="header">
@@ -31,12 +32,11 @@
           TRAINS <span class="arrow">▼</span>
         </div>
         <div class="submenu" id="trains-submenu">
-          <a href="#" class="submenu-item">Book Now</a>
-          <a href="#" class="submenu-item">PNR Enquiry</a>
-          <a href="#" class="submenu-item">Train Schedule</a>
+          <a href="#" class="submenu-item" id="bookTickets">Book Now</a>
+          <a href="#" class="submenu-item" id="viewTrains">View Trains</a>
+          <a href="#" class="submenu-item" id="cancelTickets">Cancel Tickets</a>
         </div>
       </div>
-
 
       <div class="menu-item">
         <a href="#" class="menu-main">CONTACT US</a>
@@ -59,7 +59,9 @@
               placeholder="Enter your full name"
               required
             />
+            <div id="fullname-error" class="error-message"></div>
           </div>
+
           <div class="input-group">
             <label for="username">Username</label>
             <input
@@ -69,6 +71,7 @@
               placeholder="Choose a username"
               required
             />
+            <div id="username-error" class="error-message"></div>
           </div>
 
           <div class="input-group">
@@ -80,6 +83,7 @@
               placeholder="Enter your email address"
               required
             />
+            <div id="email-error" class="error-message"></div>
           </div>
 
           <div class="input-group">
@@ -91,6 +95,9 @@
               placeholder="Choose a password"
               required
             />
+
+            <div id="password-error" class="error-message"></div>
+            <div id="password-strength" class="password-strength"></div>
           </div>
 
           <div class="input-group">
@@ -102,6 +109,8 @@
               placeholder="Confirm your password"
               required
             />
+
+            <div id="confirm-password-error" class="error-message"></div>
           </div>
 
           <div class="input-group">
@@ -127,6 +136,8 @@
                 required
               />
             </div>
+
+            <div id="mobile-error" class="error-message"></div>
           </div>
 
           <button type="submit" class="login-btn">Register</button>
@@ -141,5 +152,6 @@
     <footer class="footer"></footer>
 
     <script src="assets/script.js"></script>
+    <script src="assets/register.js"></script>
   </body>
 </html>

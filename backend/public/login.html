@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>IRCTC Clone - Login</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="assets/session.js"></script>
   </head>
 
   <body>
@@ -25,19 +26,18 @@
       </div>
     </header>
 
-     <!-- Side Menu -->
+    <!-- Side Menu -->
     <div class="side-menu" id="sideMenu">
       <div class="menu-item">
         <div class="menu-main" data-menu="trains">
           TRAINS <span class="arrow">▼</span>
         </div>
         <div class="submenu" id="trains-submenu">
-          <a href="#" class="submenu-item">Book Now</a>
-          <a href="#" class="submenu-item">PNR Enquiry</a>
-          <a href="#" class="submenu-item">Train Schedule</a>
+          <a href="#" class="submenu-item" id="bookTickets">Book Now</a>
+          <a href="#" class="submenu-item" id="viewTrains">View Trains</a>
+          <a href="#" class="submenu-item" id="cancelTickets">Cancel Tickets</a>
         </div>
       </div>
-
 
       <div class="menu-item">
         <a href="#" class="menu-main">CONTACT US</a>
@@ -86,5 +86,6 @@
     <footer class="footer"></footer>
 
     <script src="assets/script.js"></script>
+    <script src="assets/login.js"></script>
   </body>
 </html>

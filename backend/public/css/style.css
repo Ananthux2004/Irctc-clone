@@ -40,6 +40,28 @@ body {
   gap: 1rem;
 }
 
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-logout {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.user-logout:hover {
+  background: #dc3545;
+  color: white;
+}
+
 /* Hamburger Menu Button */
 .menu-toggle {
   margin-left: 0px;

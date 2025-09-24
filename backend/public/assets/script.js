@@ -1,4 +1,3 @@
-// Wait for the page to load
 document.addEventListener("DOMContentLoaded", function () {
   // Get navigation elements
   const homeLink = document.getElementById("homeLink");
@@ -129,8 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function isLoggedIn() {
-    // This should be replaced with actual authentication check
-    return false; // For now, always return false to redirect to login
+    return true; 
   }
 
   function showContent(section) {
