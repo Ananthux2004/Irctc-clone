@@ -47,18 +47,25 @@
 
   <body>
     <header class="header">
-      <div class="container">
-        <div class="logo-section">
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+        <!-- Left Logo -->
+  <img src="images/right-logo.png" alt="Left Logo" style="height: 64px; width: 64px; object-fit: contain; margin-right: 10px;" />
+        <div class="logo-section" style="display: flex; align-items: center; gap: 10px;">
           <button class="menu-toggle" id="menuToggle">
             <span></span>
             <span></span>
             <span></span>
           </button>
-          <h1>IRCTC HOME</h1>
+          <h1 style="margin: 0; font-size: 1.7rem;">IRCTC</h1>
         </div>
-        <nav>
+        <nav style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
           <a href="index.html" class="nav-link active" id="homeLink">Home</a>
-          <div class="auth-section">
+          <a href="#" class="nav-link">Sample1</a>
+          <a href="#" class="nav-link">Sample2</a>
+          <a href="#" class="nav-link">Sample3</a>
+          <a href="#" class="nav-link">Sample4</a>
+          <a href="#" class="nav-link">Sample5</a>
+          <div class="auth-section" style="display: inline-block;">
             <a href="login.html" class="nav-link" id="loginLink">Login</a>
             <button
               class="nav-link user-logout"
@@ -69,6 +76,8 @@
             </button>
           </div>
         </nav>
+        <!-- Right Logo -->
+  <img src="images/left-logo.jpg" alt="Right Logo" style="height: 64px; width: 64px; object-fit: contain; margin-left: 10px;" />
       </div>
     </header>
     <!-- Side Menu -->
