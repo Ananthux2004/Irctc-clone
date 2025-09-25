@@ -5,23 +5,79 @@
     <meta name="viewport" content="width=device-width" />
     <title>IRCTC</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="assets/session.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginLink = document.getElementById("loginLink");
+        const userInfo = document.getElementById("userInfo");
+        const usernameSpan = document.getElementById("username");
+
+        // Check if user is logged in
+        const user = session.getSession();
+        if (user) {
+          console.log(user);
+          // Check if session is valid (optional: you can add maximum session duration)
+          const sessionDuration = session.getSessionDuration();
+          if (sessionDuration > 120) {
+            // 2 hours max session
+            session.clearSession();
+            window.location.reload();
+            return;
+          }
+
+          loginLink.style.display = "none";
+          userInfo.style.display = "inline-block";
+          usernameSpan.textContent = user.username;
+
+          // Store user ID in data attribute for easy access
+          userInfo.dataset.userId = user.id;
+        } else {
+          loginLink.style.display = "block";
+          userInfo.style.display = "none";
+        }
+
+        // Handle logout
+        userInfo.addEventListener("click", function () {
+          session.clearSession();
+          window.location.reload();
+        });
+      });
+    </script>
   </head>
 
   <body>
     <header class="header">
-      <div class="container">
-        <div class="logo-section">
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+        <!-- Left Logo -->
+  <img src="images/right-logo.png" alt="Left Logo" style="height: 64px; width: 64px; object-fit: contain; margin-right: 10px;" />
+        <div class="logo-section" style="display: flex; align-items: center; gap: 10px;">
           <button class="menu-toggle" id="menuToggle">
             <span></span>
             <span></span>
             <span></span>
           </button>
-          <h1>IRCTC</h1>
+          <h1 style="margin: 0; font-size: 1.7rem;">IRCTC</h1>
         </div>
-        <nav>
+        <nav style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
           <a href="index.html" class="nav-link active" id="homeLink">Home</a>
-          <a href="login.html" class="nav-link" id="loginLink">Login</a>
+          <a href="#" class="nav-link">Sample1</a>
+          <a href="#" class="nav-link">Sample2</a>
+          <a href="#" class="nav-link">Sample3</a>
+          <a href="#" class="nav-link">Sample4</a>
+          <a href="#" class="nav-link">Sample5</a>
+          <div class="auth-section" style="display: inline-block;">
+            <a href="login.html" class="nav-link" id="loginLink">Login</a>
+            <button
+              class="nav-link user-logout"
+              id="userInfo"
+              style="display: none"
+            >
+              <span id="username"></span>
+            </button>
+          </div>
         </nav>
+        <!-- Right Logo -->
+  <img src="images/left-logo.jpg" alt="Right Logo" style="height: 64px; width: 64px; object-fit: contain; margin-left: 10px;" />
       </div>
     </header>
     <!-- Side Menu -->
@@ -31,12 +87,11 @@
           TRAINS <span class="arrow">▼</span>
         </div>
         <div class="submenu" id="trains-submenu">
-          <a href="#" class="submenu-item" id = "bookTickets">Book Now</a>
-          <a href="#" class="submenu-item" id = "viewTrains">View Trains</a>
-          <a href="#" class="submenu-item" id = "cancelTickets">Cancel Tickets</a>
+          <a href="" class="submenu-item" id="bookTickets">Book Now</a>
+          <a href="#" class="submenu-item" id="viewTrains">View Trains</a>
+          <a href="#" class="submenu-item" id="cancelTickets">Cancel Tickets</a>
         </div>
       </div>
-
 
       <div class="menu-item">
         <a href="#" class="menu-main">CONTACT US</a>

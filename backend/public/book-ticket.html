@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Train Ticket - IRCTC Clone</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/book-ticket.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo-section">
+          <button class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <h1>IRCTC</h1>
+        </div>
+        <nav>
+          <a href="index.html" class="nav-link" id="homeLink">Home</a>
+          <div class="auth-section">
+            <a href="login.html" class="nav-link" id="loginLink">Login</a>
+            <button
+              class="nav-link user-logout"
+              id="userInfo"
+              style="display: none"
+            >
+              <span id="username"></span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <div class="booking-container">
+      <h1>BOOK TICKET</h1>
+      <form id="bookingForm">
+        <div class="form-group">
+          <div class="input-group">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" id="from" placeholder="From*" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" id="to" placeholder="To*" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <i class="fas fa-calendar"></i>
+            <input type="date" id="journeyDate" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-train"></i>
+            <select id="classType">
+              <option value="">All Classes</option>
+              <option value="1A">First AC (1A)</option>
+              <option value="2A">Second AC (2A)</option>
+              <option value="3A">Third AC (3A)</option>
+              <option value="SL">Sleeper (SL)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group checkboxes">
+          <label>
+            <input type="checkbox" id="flexibleDate" />
+            Flexible With Date
+          </label>
+          <label>
+            <input type="checkbox" id="divyangConcession" />
+            Person With Disability Concession
+          </label>
+          <label>
+            <input type="checkbox" id="railwayPass" />
+            Railway Pass Concession
+          </label>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="search-btn">Search</button>
+          <button type="button" class="booking-btn">
+            Easy Booking on AskDISHA
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script src="assets/session.js"></script>
+    <script src="assets/js/book-ticket.js"></script>
+  </body>
+</html>
