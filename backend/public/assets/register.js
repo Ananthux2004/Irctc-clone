@@ -47,16 +47,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const mobile = mobileInput.value.trim();
 
     // Check if there are any validation errors
-    const errorElements = Array.from(
+    const hasErrors = Array.from(
       document.querySelectorAll(".error-message")
-    );
-    const hasErrors = errorElements.some((error) => error.textContent !== "");
-    if (hasErrors) {
-      const errorMessages = errorElements
-        .filter((error) => error.textContent !== "")
-        .map((error) => error.textContent);
-      console.log("Validation errors:", errorMessages);
-    }
+    ).some((error) => error.textContent !== "");
 
     // Check for empty fields
     const hasEmptyFields =

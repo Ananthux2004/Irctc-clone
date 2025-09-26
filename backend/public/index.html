@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width" />
     <title>IRCTC</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/book-ticket.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <script src="assets/session.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -27,7 +32,12 @@
 
           loginLink.style.display = "none";
           userInfo.style.display = "inline-block";
-          usernameSpan.textContent = user.username;
+          usernameSpan.innerHTML = '<i class="fas fa-user" style="margin-right: 6px;"></i>' + user.username;
+          usernameSpan.style.background = '#ff9800';
+          usernameSpan.style.color = '#fff';
+          usernameSpan.style.padding = '0.25rem 0.75rem';
+          usernameSpan.style.borderRadius = '6px';
+          usernameSpan.style.fontWeight = 'bold';
 
           // Store user ID in data attribute for easy access
           userInfo.dataset.userId = user.id;
@@ -60,13 +70,13 @@
         </div>
         <nav style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
           <a href="index.html" class="nav-link active" id="homeLink">Home</a>
-          <a href="#" class="nav-link">Sample1</a>
-          <a href="#" class="nav-link">Sample2</a>
-          <a href="#" class="nav-link">Sample3</a>
-          <a href="#" class="nav-link">Sample4</a>
-          <a href="#" class="nav-link">Sample5</a>
+          <a href="#" class="nav-link">Trains</a>
+          <!-- <a href="#" class="nav-link">Sample2</a> -->
+          <a href="#" class="nav-link">About Us</a>
+          <a href="#" class="nav-link">Contact Us</a>
+          <a href="#" class="nav-link">Alerts</a>
           <div class="auth-section" style="display: inline-block;">
-            <a href="login.html" class="nav-link" id="loginLink">Login</a>
+            <a href="login.html" class="nav-link" id="loginLink" style="background: #10467b; color: #fff; border-radius: 6px; padding: 0.25rem 1rem;">Login</a>
             <button
               class="nav-link user-logout"
               id="userInfo"
@@ -100,16 +110,65 @@
 
     <!-- Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
-    <main class="main-content">
-      <div class="welcome-container">
-        <h2>Welcome to IRCTC</h2>
-        <p>Book your train tickets easily and securely.</p>
-        <!-- <div class="action-buttons">
-          <a href="login.html" class="btn">Login</a>
-          <a href="register.html" class="btn">Register</a>
-        </div> -->
+
+    <!-- Hero Section with Responsive Image, Title, and Booking Container Overlay -->
+    <div style="position: relative; width: 100%; margin: 0 auto;">
+      <img src="images/home-bg.jpg" alt="Indian Railways" style="width: 100%; aspect-ratio: 16/7; height: auto; max-width: 100vw; object-fit: cover; display: block; margin: 0; padding: 0; border: none;" />
+      <div style="position: absolute; top: 48px; right: 48px; color: #fff; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: bold; letter-spacing: 2px; text-shadow: 2px 2px 8px #000; font-family: inherit;">
+        INDIAN<br>
+        RAILWAYS
       </div>
-    </main>
+      <div class="booking-container" style="position: absolute; top: 48px; left: 175px; z-index: 2; background: rgba(255,255,255,0.97); box-shadow: 0 4px 24px rgba(0,0,0,0.12); border-radius: 16px; padding: 32px 28px; min-width: 340px; max-width: 420px;">
+        <h1 style="margin-top: 0;">BOOK TICKET</h1>
+        <form id="bookingForm">
+          <div class="form-group">
+          <div class="input-group">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" id="from" placeholder="From*" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" id="to" placeholder="To*" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <i class="fas fa-calendar"></i>
+            <input type="date" id="journeyDate" required />
+          </div>
+          <div class="input-group">
+            <i class="fas fa-train"></i>
+            <select id="classType">
+              <option value="">All Classes</option>
+              <option value="1A">First AC (1A)</option>
+              <option value="2A">Second AC (2A)</option>
+              <option value="3A">Third AC (3A)</option>
+              <option value="SL">Sleeper (SL)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group checkboxes">
+         
+          <label>
+            <input type="checkbox" id="divyangConcession" />
+            Person With Disability Concession
+          </label>
+          <label>
+            <input type="checkbox" id="railwayPass" />
+            Railway Pass Concession
+          </label>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" class="search-btn">Search</button>
+        
+        </div>
+      </form>
+    </div>
+
+    <script src="assets/session.js"></script>
 
     <footer class="footer"></footer>
 
