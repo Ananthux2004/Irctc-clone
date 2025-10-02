@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Contact</title>
+    <link href="css/contact.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
+        <!-- Left Logo -->
+        <img src="images/right-logo.png" alt="Left Logo" style="height: 64px; width: 64px; object-fit: contain; margin-right: 10px;" />
+        <div class="logo-section" style="display: flex; align-items: center; gap: 10px;">
+          <h1 style="margin: 0; font-size: 1.7rem;">IRCTC</h1>
+        </div>
+        <nav style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
+          <a href="index.html" class="nav-link" id="homeLink">Home</a>
+          <a href="#" class="nav-link">Trains</a>
+          <a href="#" class="nav-link">About Us</a>
+          <a href="#" class="nav-link active">Contact Us</a>
+          <a href="#" class="nav-link">Alerts</a>
+          <div class="auth-section" style="display: inline-block;">
+            <a href="login.html" class="nav-link" id="loginLink" style="background: #10467b; color: #fff; border-radius: 6px; padding: 0.25rem 1rem;">Login</a>
+            <button class="nav-link user-logout" id="userInfo" style="display: none">
+              <span id="username"></span>
+            </button>
+          </div>
+        </nav>
+        <!-- Right Logo -->
+        <img src="images/left-logo.jpg" alt="Right Logo" style="height: 64px; width: 64px; object-fit: contain; margin-left: 10px;" />
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="content-wrapper">
+       <!-- Contacts Section -->
+        <div class="contact-section">
+          <h2>Contacts</h2>
+          <p class="intro-text">
+             We will make sure your questions are answered.
+          </p>
+
+          <div class="contact-info">
+            <div class="contact-item">
+              <h3>Email</h3>
+              <p>For any queries, reach us at:</p>
+              <a href="mailto:support@irctc.com">support@irctc.com</a>
+            </div>
+
+            <div class="contact-item">
+              <h3>GitHub</h3>
+              <p>Check out our project repositories:</p>
+              <a href="https://github.com/yourusername" target="_blank">https://github.com/Amith-xx</a>
+            </div>
+
+            <div class="social-icons">
+              <a href="#" class="social-icon" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon" title="GitHub">
+                <i class="fab fa-github"></i>
+              </a>
+              <a href="#" class="social-icon" title="Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="feedback-section">
+          <h2>Feedback</h2>
+          <p class="intro-text">
+            At IRCTC, we LOVE hearing from our customers. Tell us how you feel about this site?
+             Are you getting what you are looking for? If not do let us know, We're happy to help you in getting what you want..
+          </p>
+
+          <form class="feedback-form" id="feedbackForm">
+            <div class="form-group">
+              <i class="fas fa-user"></i>
+              <input type="text" class="form-control" placeholder="Name" required />
+            </div>
+
+            <div class="form-group">
+              <i class="fas fa-envelope"></i>
+              <input type="email" class="form-control" placeholder="Email" required />
+            </div>
+
+            <div class="form-group">
+              <i class="fas fa-envelope"></i>
+              <input type="text" class="form-control" placeholder="Subject" required />
+            </div>
+
+            <div class="form-group">
+              <i class="fas fa-comment"></i>
+              <textarea class="form-control" placeholder="Feedback" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Handle form submission
+      document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for your feedback! We will get back to you soon.');
+        this.reset();
+      });
+
+      
+    </script>
+  </body>
+</html>
