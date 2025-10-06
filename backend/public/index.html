@@ -61,19 +61,20 @@
         <!-- Left Logo -->
   <img src="images/right-logo.png" alt="Left Logo" style="height: 64px; width: 64px; object-fit: contain; margin-right: 10px;" />
         <div class="logo-section" style="display: flex; align-items: center; gap: 10px;">
-          <button class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
           <h1 style="margin: 0; font-size: 1.7rem;">IRCTC</h1>
         </div>
         <nav style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
           <a href="index.html" class="nav-link active" id="homeLink">Home</a>
-          <a href="#" class="nav-link">Trains</a>
-          <!-- <a href="#" class="nav-link">Booking</a> -->
+          <div class="nav-dropdown">
+            <a href="#" class="nav-link">Trains <i class="fas fa-caret-down"></i></a>
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">View Trains</a>
+              <a href="book-ticket.html" class="dropdown-item">Book Tickets</a>
+              <a href="#" class="dropdown-item">Cancel Tickets</a>
+            </div>
+          </div>
           <a href="#" class="nav-link">About Us</a>
-          <a href="#" class="nav-link">Contact Us</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
           <a href="#" class="nav-link">Alerts</a>
           <div class="auth-section" style="display: inline-block;">
             <a href="login.html" class="nav-link" id="loginLink" style="background: #10467b; color: #fff; border-radius: 6px; padding: 0.25rem 1rem;">Login</a>
@@ -104,7 +105,7 @@
       </div>
 
       <div class="menu-item">
-        <a href="#" class="menu-main">CONTACT US</a>
+        <a href="contact.html" class="menu-main">CONTACT US</a>
       </div>
     </div>
 
