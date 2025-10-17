@@ -1,8 +1,10 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const session = require("express-session");
 const User = require("./models/User");
 const userRoutes = require("./routes/userRoutes");
+const trainRoutes = require("./routes/trainRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -12,10 +14,28 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Session middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // set to true if using https
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
 // MongoDB Connection
 const db = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/IRCTC");
+    const mongoURI =
+      process.env.MONGODB_URI || "mongodb://localhost:27017/IRCTC";
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
@@ -28,6 +48,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // API routes
 app.use("/api/users", userRoutes);
+app.use("/api/trains", trainRoutes);
 
 // Basic route
 app.get("/", (req, res) => {

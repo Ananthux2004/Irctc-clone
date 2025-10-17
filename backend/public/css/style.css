@@ -147,11 +147,11 @@ nav {
 .form-container {
   background: white;
   padding: 3rem 2.5rem;
-  border-radius: 15px;
+  border-radius: 40px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 450px;
-  margin: 0 auto;
+  margin: 12px auto;
 }
 
 .form-container.register {
@@ -286,7 +286,7 @@ nav {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   padding: 2rem 4rem;
   overflow-y: auto;
-  margin: 0 auto;
+  margin: -25px auto;
   max-width: 800px;
 }
 

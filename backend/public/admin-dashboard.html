@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IRCTC Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>IRCTC Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <ul>
+            <li class="active" data-page="overview">
+              <i class="fas fa-chart-line"></i>
+              <span>Overview</span>
+            </li>
+            <li data-page="train-management">
+              <i class="fas fa-train"></i>
+              <span>Train Management</span>
+            </li>
+            <li data-page="booking-management">
+              <i class="fas fa-ticket-alt"></i>
+              <span>Booking Management</span>
+            </li>
+            <li data-page="user-management">
+              <i class="fas fa-users"></i>
+              <span>User Management</span>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-header">
+          <div class="header-search">
+            <input
+              type="text"
+              placeholder="Search trains, bookings, or users..."
+            />
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="header-right">
+            <div class="notifications">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="admin-profile">
+              <span>Admin User</span>
+              <button id="logoutBtn">Logout</button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Pages -->
+        <div class="content-pages">
+          <!-- Train Management Page -->
+          <div id="train-management" class="page">
+            <div class="page-header">
+              <h2>Train Management</h2>
+              <button class="add-train-btn" id="addNewTrainBtn">
+                <i class="fas fa-plus"></i> Add New Train
+              </button>
+            </div>
+            <div class="search-filters">
+              <input
+                type="text"
+                placeholder="Search trains by number, name, or route..."
+              />
+              <button class="filter-btn">
+                <i class="fas fa-filter"></i> Filters
+              </button>
+            </div>
+            <div class="trains-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Train Name</th>
+                    <th>Number</th>
+                    <th>Route</th>
+                    <th>Schedule</th>
+                    <th>Status</th>
+                    <th>Coaches</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="trainList">
+                  <!-- Trains will be listed here dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Booking Management Page -->
+          <div id="booking-management" class="page hidden">
+            <div class="page-header">
+              <h2>Booking Management</h2>
+            </div>
+            <div class="bookings-list" id="bookingsList">
+              <!-- Bookings will be listed here -->
+            </div>
+          </div>
+
+          <!-- User Management Page -->
+          <div id="user-management" class="page hidden">
+            <div class="page-header">
+              <h2>User Management</h2>
+            </div>
+            <div class="users-list" id="usersList">
+              <!-- Users will be listed here -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Add Train Modal -->
+    <div id="addTrainModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add New Train</h3>
+          <span class="close-modal">&times;</span>
+        </div>
+        <form id="addTrainForm">
+          <div class="form-group">
+            <label>Train Name</label>
+            <input type="text" id="trainName" required />
+          </div>
+          <div class="form-group">
+            <label>Train Number</label>
+            <input type="text" id="trainNumber" required />
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Source Station</label>
+              <input type="text" id="source" required />
+            </div>
+            <div class="form-group">
+              <label>Destination Station</label>
+              <input type="text" id="destination" required />
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Departure Time</label>
+              <input type="time" id="departureTime" required />
+            </div>
+            <div class="form-group">
+              <label>Arrival Time</label>
+              <input type="time" id="arrivalTime" required />
+            </div>
+          </div>
+          <div class="form-section">
+            <h4>Seat Configuration</h4>
+            <div class="seat-config">
+              <div class="form-group">
+                <label>Sleeper Seats</label>
+                <input type="number" id="sleeperSeats" value="100" required />
+                <input
+                  type="number"
+                  id="sleeperPrice"
+                  placeholder="Price"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>AC Seats</label>
+                <input type="number" id="acSeats" value="50" required />
+                <input
+                  type="number"
+                  id="acPrice"
+                  placeholder="Price"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>General Seats</label>
+                <input type="number" id="generalSeats" value="200" required />
+                <input
+                  type="number"
+                  id="generalPrice"
+                  placeholder="Price"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-section">
+            <h4>Days of Operation</h4>
+            <div class="days-selection">
+              <label><input type="checkbox" value="Sunday" /> Sun</label>
+              <label><input type="checkbox" value="Monday" /> Mon</label>
+              <label><input type="checkbox" value="Tuesday" /> Tue</label>
+              <label><input type="checkbox" value="Wednesday" /> Wed</label>
+              <label><input type="checkbox" value="Thursday" /> Thu</label>
+              <label><input type="checkbox" value="Friday" /> Fri</label>
+              <label><input type="checkbox" value="Saturday" /> Sat</label>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="cancel-btn">Cancel</button>
+            <button type="submit" class="submit-btn">Add Train</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- View Train Modal -->
+    <div id="viewTrainModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>View Train Details</h2>
+          <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <!-- Content will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Train Modal -->
+    <div id="editTrainModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Train</h2>
+          <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+          <!-- Content will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/admin-dashboard.js"></script>
+  </body>
+</html>
