@@ -1,47 +1,143 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>IRCTC - Register</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="css/register.css">
-    
+    <link href="css/register.css" rel="stylesheet" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="assets/session.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginLink = document.getElementById("loginLink");
+        const userInfo = document.getElementById("userInfo");
+        const usernameSpan = document.getElementById("navUsername");
+
+        // Check if user is logged in
+        const user = session.getSession();
+        if (user) {
+          console.log(user);
+          const sessionDuration = session.getSessionDuration();
+          if (sessionDuration > 120) {
+            session.clearSession();
+            window.location.reload();
+            return;
+          }
+
+          loginLink.style.display = "none";
+          userInfo.style.display = "inline-block";
+          usernameSpan.innerHTML =
+            '<i class="fas fa-user" style="margin-right: 6px;"></i>' +
+            user.username;
+          usernameSpan.style.background = "#ff9800";
+          usernameSpan.style.color = "#fff";
+          usernameSpan.style.padding = "0.25rem 0.75rem";
+          usernameSpan.style.borderRadius = "6px";
+          usernameSpan.style.fontWeight = "bold";
+
+          userInfo.dataset.userId = user.id;
+        } else {
+          loginLink.style.display = "block";
+          userInfo.style.display = "none";
+        }
+
+        // Handle logout
+        userInfo.addEventListener("click", function () {
+          session.clearSession();
+          window.location.reload();
+        });
+      });
+    </script>
   </head>
+
   <body>
     <header class="header">
-      <div class="container">
-        <div class="logo-section">
-          <button class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <h1>IRCTC</h1>
+      <div
+        class="container"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <!-- Left Logo -->
+        <img
+          src="images/right-logo.png"
+          alt="Left Logo"
+          style="
+            height: 64px;
+            width: 64px;
+            object-fit: contain;
+            margin-right: 10px;
+          "
+        />
+        <div
+          class="logo-section"
+          style="display: flex; align-items: center; gap: 10px"
+        >
+          <h1 style="margin: 0; font-size: 1.7rem">IRCTC</h1>
         </div>
-        <nav>
+        <nav
+          style="
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-left: auto;
+          "
+        >
           <a href="index.html" class="nav-link" id="homeLink">Home</a>
-          <a href="login.html" class="nav-link" id="loginLink">Login</a>
+          <div class="nav-dropdown">
+            <a href="#" class="nav-link"
+              >Trains <i class="fas fa-caret-down"></i
+            ></a>
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">View Trains</a>
+              <a href="book-ticket.html" class="dropdown-item">Book Tickets</a>
+              <a href="#" class="dropdown-item">Cancel Tickets</a>
+            </div>
+          </div>
+          <a href="#" class="nav-link">About Us</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
+          <a href="#" class="nav-link">Alerts</a>
+          <div class="auth-section" style="display: inline-block">
+            <a
+              href="login.html"
+              class="nav-link"
+              id="loginLink"
+              style="
+                background: #10467b;
+                color: #fff;
+                border-radius: 6px;
+                padding: 0.25rem 1rem;
+              "
+              >Login</a
+            >
+            <button
+              class="nav-link user-logout"
+              id="userInfo"
+              style="display: none"
+            >
+              <span id="navUsername"></span>
+            </button>
+          </div>
         </nav>
+        <!-- Right Logo -->
+        <img
+          src="images/left-logo.jpg"
+          alt="Right Logo"
+          style="
+            height: 64px;
+            width: 64px;
+            object-fit: contain;
+            margin-left: 10px;
+          "
+        />
       </div>
     </header>
-
-    <!-- Side Menu -->
-    <div class="side-menu" id="sideMenu">
-      <div class="menu-item">
-        <div class="menu-main" data-menu="trains">
-          TRAINS <span class="arrow">▼</span>
-        </div>
-        <div class="submenu" id="trains-submenu">
-          <a href="#" class="submenu-item" id="bookTickets">Book Now</a>
-          <a href="#" class="submenu-item" id="viewTrains">View Trains</a>
-          <a href="#" class="submenu-item" id="cancelTickets">Cancel Tickets</a>
-        </div>
-      </div>
-
-      <div class="menu-item">
-        <a href="#" class="menu-main">CONTACT US</a>
-      </div>
-    </div>
 
     <!-- Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>

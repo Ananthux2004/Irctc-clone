@@ -6,6 +6,7 @@
     <title>IRCTC</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <link href="css/book-ticket.css" rel="stylesheet" type="text/css" />
+    <link href="css/search.css" rel="stylesheet" type="text/css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -120,59 +121,57 @@
         RAILWAYS
       </div>
       <div class="booking-container" style="position: absolute; top: 48px; left: 175px; z-index: 2; background: rgba(255,255,255,0.97); box-shadow: 0 4px 24px rgba(0,0,0,0.12); border-radius: 16px; padding: 32px 28px; min-width: 340px; max-width: 420px;">
-        <h1 style="margin-top: 0;">BOOK TICKET</h1>
-        <form id="bookingForm">
+        <h1 style="margin-top: 0;">Search Trains</h1>
+        <form id="trainSearchForm">
           <div class="form-group">
-          <div class="input-group">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" id="from" placeholder="From*" required />
+            <div class="input-group">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" id="fromStation" placeholder="From Station*" required />
+            </div>
+            <button type="button" class="switch-stations" aria-label="Switch stations">⇄</button>
+            <div class="input-group">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" id="toStation" placeholder="To Station*" required />
+            </div>
           </div>
-          <div class="input-group">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" id="to" placeholder="To*" required />
-          </div>
-        </div>
 
-        <div class="form-group">
-          <div class="input-group">
-            <i class="fas fa-calendar"></i>
-            <input type="date" id="journeyDate" required />
+          <div class="form-group">
+            <div class="input-group">
+              <i class="fas fa-calendar"></i>
+              <input type="date" id="journeyDate" required />
+            </div>
+            <div class="input-group">
+              <i class="fas fa-train"></i>
+              <select id="classType">
+                <option value="All Classes">All Classes</option>
+                <option value="1A">First AC (1A)</option>
+                <option value="2A">Second AC (2A)</option>
+                <option value="3A">Third AC (3A)</option>
+                <option value="SL">Sleeper (SL)</option>
+              </select>
+            </div>
           </div>
-          <div class="input-group">
-            <i class="fas fa-train"></i>
-            <select id="classType">
-              <option value="">All Classes</option>
-              <option value="1A">First AC (1A)</option>
-              <option value="2A">Second AC (2A)</option>
-              <option value="3A">Third AC (3A)</option>
-              <option value="SL">Sleeper (SL)</option>
-            </select>
+
+          <div class="form-group checkboxes">
+            <label>
+              <input type="checkbox" id="divyangConcession" />
+              Person With Disability Concession
+            </label>
+            <label>
+              <input type="checkbox" id="railwayPass" />
+              Railway Pass Concession
+            </label>
           </div>
-        </div>
 
-        <div class="form-group checkboxes">
-         
-          <label>
-            <input type="checkbox" id="divyangConcession" />
-            Person With Disability Concession
-          </label>
-          <label>
-            <input type="checkbox" id="railwayPass" />
-            Railway Pass Concession
-          </label>
-        </div>
-
-        <div class="button-group">
-          <button type="submit" class="search-btn">Search</button>
-        
-        </div>
-      </form>
-    </div>
+          <div class="button-group">
+            <button type="submit" class="search-button">Search Trains</button>
+          </div>
+        </form>
+      </div>
 
     <script src="assets/session.js"></script>
-
+    <script src="assets/search.js"></script>
     <footer class="footer"></footer>
-
     <script src="assets/script.js"></script>
   </body>
 </html>

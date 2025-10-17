@@ -2,13 +2,26 @@
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
 
+  if (!loginForm) {
+    console.error("loginForm element not found");
+    return;
+  }
+
   // Handle login form submission
   loginForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Get form data
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value;
+    // Get form data (safely)
+    const usernameEl = document.getElementById("username");
+    const passwordEl = document.getElementById("password");
+
+    if (!usernameEl || !passwordEl) {
+      alert("Form elements missing. Please reload the page.");
+      return;
+    }
+
+    const username = (usernameEl.value || "").trim();
+    const password = passwordEl.value || "";
 
     // Basic validation
     if (!username || !password) {
@@ -27,10 +40,17 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          // Save user session data
-          session.saveSession(data.user);
-          // Redirect to index page
-          window.location.href = "/index.html";
+          // Save session data first (if session helper available)
+          if (typeof session !== "undefined" && session.saveSession) {
+            try {
+              session.saveSession(data.user);
+            } catch (e) {
+              console.warn("Failed to save session locally", e);
+            }
+          }
+
+          // Then redirect based on user role
+          window.location.href = data.redirectUrl;
         } else {
           alert(data.message || "Login failed. Please try again.");
         }
@@ -45,27 +65,30 @@ document.addEventListener("DOMContentLoaded", function () {
   const usernameInput = document.getElementById("username");
   const passwordInput = document.getElementById("password");
 
-  // Username validation
-  usernameInput.addEventListener("input", function () {
-    const username = this.value.trim();
-    if (username.length === 0) {
-      this.classList.add("error");
-      this.classList.remove("valid");
-    } else {
-      this.classList.add("valid");
-      this.classList.remove("error");
-    }
-  });
+  // Add simple input validation handlers only if elements exist
+  if (usernameInput) {
+    usernameInput.addEventListener("input", function () {
+      const username = (this.value || "").trim();
+      if (username.length === 0) {
+        this.classList.add("error");
+        this.classList.remove("valid");
+      } else {
+        this.classList.add("valid");
+        this.classList.remove("error");
+      }
+    });
+  }
 
-  // Password validation
-  passwordInput.addEventListener("input", function () {
-    const password = this.value;
-    if (password.length === 0) {
-      this.classList.add("error");
-      this.classList.remove("valid");
-    } else {
-      this.classList.add("valid");
-      this.classList.remove("error");
-    }
-  });
+  if (passwordInput) {
+    passwordInput.addEventListener("input", function () {
+      const password = this.value || "";
+      if (password.length === 0) {
+        this.classList.add("error");
+        this.classList.remove("valid");
+      } else {
+        this.classList.add("valid");
+        this.classList.remove("error");
+      }
+    });
+  }
 });

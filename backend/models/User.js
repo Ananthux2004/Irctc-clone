@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [6, "Password should be at least 6 characters"],
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -39,10 +43,6 @@ const userSchema = new mongoose.Schema(
         "Please enter a valid country code (e.g., +91)",
       ],
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -57,8 +57,3 @@ const userSchema = new mongoose.Schema(
 userSchema.index({ email: 1, username: 1 });
 
 module.exports = mongoose.model("User", userSchema);
-
-
-
-
-

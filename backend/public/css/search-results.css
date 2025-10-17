@@ -1,0 +1,158 @@
+.search-container {
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 6px;
+  border-bottom: 2px solid #eee;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.filter-item {
+  flex: 1;
+}
+
+.filter-item input,
+.filter-item select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.switch-icon {
+  cursor: pointer;
+  font-size: 20px;
+  color: #0056b3;
+}
+
+.modify-search-btn {
+  padding: 10px 20px;
+  background-color: #ff6b01;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.modify-search-btn:hover {
+  background-color: #e65600;
+}
+
+.results-container {
+  padding: 20px;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+}
+
+.train-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.train-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.train-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.train-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.train-number {
+  font-size: 14px;
+  color: #666;
+}
+
+.train-schedule {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.schedule-item {
+  text-align: center;
+}
+
+.time {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.station {
+  font-size: 14px;
+  color: #666;
+}
+
+.train-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.info-item {
+  font-size: 14px;
+}
+
+.info-label {
+  color: #666;
+}
+
+.info-value {
+  font-weight: bold;
+}
+
+.fare-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.class-fare {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .train-cards {
+    grid-template-columns: 1fr;
+  }
+}
