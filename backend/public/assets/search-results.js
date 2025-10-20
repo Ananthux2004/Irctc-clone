@@ -31,13 +31,19 @@ function modifySearch() {
 }
 
 // Function to search trains
-async function searchTrains(from = fromStation, to = toStation, date = journeyDate, classType = document.getElementById("classType").value) {
+async function searchTrains(
+  from = fromStation,
+  to = toStation,
+  date = journeyDate,
+  classType = document.getElementById("classType").value
+) {
   const loadingSpinner = document.getElementById("loadingSpinner");
   const noResults = document.getElementById("noResults");
   const trainCards = document.getElementById("trainCards");
 
   if (!from || !to) {
-    noResults.innerHTML = '<h2>Please provide both source and destination stations</h2>';
+    noResults.innerHTML =
+      "<h2>Please provide both source and destination stations</h2>";
     noResults.style.display = "block";
     return;
   }
@@ -50,8 +56,8 @@ async function searchTrains(from = fromStation, to = toStation, date = journeyDa
     const params = new URLSearchParams({
       from: from,
       to: to,
-      date: date || '',
-      class: classType || 'All Classes'
+      date: date || "",
+      class: classType || "All Classes",
     });
 
     const response = await fetch(`/api/trains/search?${params}`);
@@ -84,6 +90,13 @@ async function searchTrains(from = fromStation, to = toStation, date = journeyDa
 function createTrainCard(train) {
   const card = document.createElement("div");
   card.className = "train-card";
+
+  const availableSeats = train.availableSeats || {
+    sleeper: 0,
+    ac: 0,
+    general: 0,
+  };
+
   card.innerHTML = `
         <div class="train-header">
             <div class="train-name">${train.name}</div>
@@ -105,10 +118,6 @@ function createTrainCard(train) {
                 <span class="info-value">${train.duration}</span>
             </div>
             <div class="info-item">
-                <span class="info-label">Distance:</span>
-                <span class="info-value">${train.distance} km</span>
-            </div>
-            <div class="info-item">
                 <span class="info-label">Days:</span>
                 <span class="info-value">${train.runningDays.join(", ")}</span>
             </div>
@@ -122,8 +131,22 @@ function createTrainCard(train) {
               .map(
                 ([className, fare]) => `
                 <div class="class-fare">
-                    <span>${className}</span>
-                    <span>₹${fare}</span>
+                    <div class="class-info">
+                        <span>${className}</span>
+                        <span class="seats-info">Available: ${
+                          className === "AC"
+                            ? availableSeats.ac
+                            : className === "Sleeper"
+                            ? availableSeats.sleeper
+                            : availableSeats.general
+                        }</span>
+                    </div>
+                    <div class="fare-info">
+                        <span>₹${fare}</span>
+                        <button onclick="bookTicket('${
+                          train.id
+                        }', '${className}')" class="book-btn">Book</button>
+                    </div>
                 </div>
             `
               )
@@ -131,6 +154,22 @@ function createTrainCard(train) {
         </div>
     `;
   return card;
+}
+
+// Function to handle ticket booking
+function bookTicket(trainId, className) {
+  // Store booking details in session storage
+  const bookingDetails = {
+    trainId,
+    class: className,
+    from: fromStation,
+    to: toStation,
+    date: journeyDate,
+  };
+  sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
+
+  // Redirect to booking page
+  window.location.href = "/book-ticket.html";
 }
 
 // Initial search with URL parameters

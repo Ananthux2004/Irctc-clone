@@ -74,6 +74,25 @@ exports.deleteTrain = async (req, res) => {
   }
 };
 
+// Helper function to calculate duration between two time strings
+const calculateDuration = (departureTime, arrivalTime) => {
+  const [depHours, depMinutes] = departureTime.split(":").map(Number);
+  const [arrHours, arrMinutes] = arrivalTime.split(":").map(Number);
+
+  let hours = arrHours - depHours;
+  let minutes = arrMinutes - depMinutes;
+
+  if (minutes < 0) {
+    hours--;
+    minutes += 60;
+  }
+  if (hours < 0) {
+    hours += 24;
+  }
+
+  return `${hours}h ${minutes}m`;
+};
+
 // Search trains
 exports.searchTrains = async (req, res) => {
   try {
@@ -81,22 +100,22 @@ exports.searchTrains = async (req, res) => {
 
     if (!from || !to) {
       return res.status(400).json({
-        message: "Source and destination stations are required"
+        message: "Source and destination stations are required",
       });
     }
 
-    console.log('Searching trains with params:', { from, to, date, classType });
+    console.log("Searching trains with params:", { from, to, date, classType });
 
     // Create base query
     let query = {
       source: { $regex: from, $options: "i" },
-      destination: { $regex: to, $options: "i" }
+      destination: { $regex: to, $options: "i" },
     };
 
-    // Find matching trains - removing populate for now to simplify query
+    // Find matching trains
     let trains = await Train.find(query);
 
-    // Filter by date and day of week
+    // Filter by date and day of week if date is provided
     if (date) {
       const searchDate = new Date(date);
       const dayOfWeek = [
@@ -113,52 +132,74 @@ exports.searchTrains = async (req, res) => {
         (train) =>
           train.daysOfOperation && train.daysOfOperation.includes(dayOfWeek)
       );
+
+      // Get schedules for the filtered trains
+      const schedules = await Schedule.find({
+        trainId: { $in: trains.map((train) => train._id) },
+        date: {
+          $gte: new Date(searchDate.setHours(0, 0, 0)),
+          $lt: new Date(searchDate.setHours(23, 59, 59)),
+        },
+      });
+
+      // Create a map of schedules by trainId
+      const scheduleMap = new Map(
+        schedules.map((schedule) => [schedule.trainId.toString(), schedule])
+      );
+
+      // Format response with additional details and schedule information
+      const formattedTrains = trains.map((train) => {
+        const schedule = scheduleMap.get(train._id.toString());
+        return {
+          id: train._id,
+          number: train.trainNumber,
+          name: train.trainName,
+          source: train.source,
+          destination: train.destination,
+          departureTime: train.departureTime,
+          arrivalTime: train.arrivalTime,
+          duration: calculateDuration(train.departureTime, train.arrivalTime),
+          runningDays: train.daysOfOperation || [],
+          status: "Available",
+          fareDetails: {
+            AC: train.price.ac,
+            Sleeper: train.price.sleeper,
+            General: train.price.general,
+          },
+          availableSeats: schedule ? schedule.seats : train.availableSeats,
+        };
+      });
+
+      return res.status(200).json(formattedTrains);
     }
 
-    // Format response with additional details
+    // If no date provided, just return the basic train information
     const formattedTrains = trains.map((train) => ({
       id: train._id,
       number: train.trainNumber,
-      name: train.name,
+      name: train.trainName,
       source: train.source,
       destination: train.destination,
       departureTime: train.departureTime,
       arrivalTime: train.arrivalTime,
       duration: calculateDuration(train.departureTime, train.arrivalTime),
-      distance: train.distance || 0,
       runningDays: train.daysOfOperation || [],
-      status: train.status || "Available",
+      status: "Available",
       fareDetails: {
-        "1A": train.fare ? train.fare * 4 : 2000,
-        "2A": train.fare ? train.fare * 3 : 1500,
-        "3A": train.fare ? train.fare * 2 : 1000,
-        SL: train.fare || 500,
+        AC: train.price.ac,
+        Sleeper: train.price.sleeper,
+        General: train.price.general,
       },
+      availableSeats: train.availableSeats,
     }));
 
     res.status(200).json(formattedTrains);
-    const schedules = await Promise.all(
-      trains.map(async (train) => {
-        const schedule = await Schedule.findOne({
-          trainId: train._id,
-          date: {
-            $gte: new Date(searchDate.setHours(0, 0, 0)),
-            $lt: new Date(searchDate.setHours(23, 59, 59)),
-          },
-        });
-
-        return {
-          ...train.toObject(),
-          availableSeats: schedule ? schedule.seats : train.availableSeats,
-        };
-      })
-    );
-
-    res.status(200).json(schedules);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error searching trains", error: error.message });
+    console.error("Search trains error:", error);
+    res.status(500).json({
+      message: "Error searching trains",
+      error: error.message,
+    });
   }
 };
 
