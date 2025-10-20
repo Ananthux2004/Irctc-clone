@@ -31,16 +31,20 @@ app.use(
 const db = async () => {
   try {
     const rawUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/IRCTC";
-    // force IPv4 if env uses "localhost"
+    // ensure local "localhost" won't resolve to ::1
     const mongoURI = rawUri.replace("localhost", "127.0.0.1");
-    console.log("Attempting MongoDB connect to:", mongoURI);
+
+    // mask credentials for logs (don't print password)
+    const safeLog = mongoURI.replace(/\/\/(.*)@/, "//<credentials>@");
+    console.log("Attempting MongoDB connect to:", safeLog);
+
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("MongoDB connected successfully");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("MongoDB connection error:", error.message || error);
     process.exit(1);
   }
 };
