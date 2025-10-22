@@ -30,15 +30,21 @@ app.use(
 // MongoDB Connection
 const db = async () => {
   try {
-    const mongoURI =
-      process.env.MONGODB_URI || "mongodb://localhost:27017/IRCTC";
+    const rawUri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/IRCTC";
+    // ensure local "localhost" won't resolve to ::1
+    const mongoURI = rawUri.replace("localhost", "127.0.0.1");
+
+    // mask credentials for logs (don't print password)
+    const safeLog = mongoURI.replace(/\/\/(.*)@/, "//<credentials>@");
+    console.log("Attempting MongoDB connect to:", safeLog);
+
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("MongoDB connected successfully");
   } catch (error) {
-    console.error("MongoDB connection error:", error.message);
+    console.error("MongoDB connection error:", error.message || error);
     process.exit(1);
   }
 };

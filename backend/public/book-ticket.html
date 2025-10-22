@@ -1,147 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>IRCTC - Book Tickets</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <link href="css/book-ticket.css" rel="stylesheet" type="text/css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Ticket - IRCTC Clone</title>
+    <link rel="stylesheet" href="css/book-ticket.css" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
-    <script src="assets/session.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const loginLink = document.getElementById("loginLink");
-        const userInfo = document.getElementById("userInfo");
-        const usernameSpan = document.getElementById("username");
-
-        // Check if user is logged in
-        const user = session.getSession();
-        if (user) {
-          console.log(user);
-          const sessionDuration = session.getSessionDuration();
-          if (sessionDuration > 120) {
-            session.clearSession();
-            window.location.reload();
-            return;
-          }
-
-          loginLink.style.display = "none";
-          userInfo.style.display = "inline-block";
-          usernameSpan.innerHTML = '<i class="fas fa-user" style="margin-right: 6px;"></i>' + user.username;
-          usernameSpan.style.background = '#ff9800';
-          usernameSpan.style.color = '#fff';
-          usernameSpan.style.padding = '0.25rem 0.75rem';
-          usernameSpan.style.borderRadius = '6px';
-          usernameSpan.style.fontWeight = 'bold';
-
-          userInfo.dataset.userId = user.id;
-        } else {
-          loginLink.style.display = "block";
-          userInfo.style.display = "none";
-        }
-
-        // Handle logout
-        userInfo.addEventListener("click", function () {
-          session.clearSession();
-          window.location.reload();
-        });
-      });
-    </script>
   </head>
-
   <body>
-    <header class="header">
-      <div class="container" style="display: flex; align-items: center; justify-content: space-between;">
-        <!-- Left Logo -->
-        <img src="images/right-logo.png" alt="Left Logo" style="height: 64px; width: 64px; object-fit: contain; margin-right: 10px;" />
-        <div class="logo-section" style="display: flex; align-items: center; gap: 10px;">
-          <h1 style="margin: 0; font-size: 1.7rem;">IRCTC</h1>
+    <div class="container">
+      <div class="booking-section">
+        <h2>Book Your Ticket</h2>
+        <div class="train-details" id="trainDetails">
+          <!-- Train details will be populated here -->
         </div>
-        <nav style="display: flex; align-items: center; gap: 24px; margin-left: auto;">
-          <a href="index.html" class="nav-link" id="homeLink">Home</a>
-          <div class="nav-dropdown">
-            <a href="#" class="nav-link active">Trains <i class="fas fa-caret-down"></i></a>
-            <div class="dropdown-content">
-              <a href="#" class="dropdown-item">View Trains</a>
-              <a href="book-ticket.html" class="dropdown-item">Book Tickets</a>
-              <a href="#" class="dropdown-item">Cancel Tickets</a>
+
+        <div class="seat-selection">
+          <h3>Select Seats</h3>
+          <div class="seat-options">
+            <div class="seat-type">
+              <label for="seatClass">Select Class:</label>
+              <select id="seatClass">
+                <option value="SL">Sleeper (SL)</option>
+                <option value="3A">AC 3 Tier (3A)</option>
+                <option value="2A">AC 2 Tier (2A)</option>
+                <option value="1A">AC First Class (1A)</option>
+              </select>
+            </div>
+            <div class="seat-count">
+              <label>Number of Seats:</label>
+              <div class="seat-counter">
+                <button type="button" id="decrementSeats" class="counter-btn">
+                  -
+                </button>
+                <input
+                  type="number"
+                  id="numberOfSeats"
+                  value="1"
+                  min="1"
+                  max="6"
+                  readonly
+                />
+                <button type="button" id="incrementSeats" class="counter-btn">
+                  +
+                </button>
+              </div>
             </div>
           </div>
-          <a href="#" class="nav-link">About Us</a>
-          <a href="contact.html" class="nav-link">Contact Us</a>
-          <a href="#" class="nav-link">Alerts</a>
-          <div class="auth-section" style="display: inline-block;">
-            <a href="login.html" class="nav-link" id="loginLink" style="background: #10467b; color: #fff; border-radius: 6px; padding: 0.25rem 1rem;">Login</a>
-            <button
-              class="nav-link user-logout"
-              id="userInfo"
-              style="display: none"
-            >
-              <span id="username"></span>
-            </button>
-          </div>
-        </nav>
-        <!-- Right Logo -->
-        <img src="images/left-logo.jpg" alt="Right Logo" style="height: 64px; width: 64px; object-fit: contain; margin-left: 10px;" />
-      </div>
-    </header>
-
-    <div class="booking-container">
-      <h1>BOOK TICKET</h1>
-      <form id="bookingForm">
-        <div class="form-group">
-          <div class="input-group">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" id="from" placeholder="From*" required />
-          </div>
-          <div class="input-group">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" id="to" placeholder="To*" required />
+          <div class="price-details" id="priceDetails">
+            <h4>Price Details</h4>
+            <div class="price-breakdown">
+              <p>Base Fare: <span id="baseFare">₹0</span></p>
+              <p>GST (5%): <span id="gst">₹0</span></p>
+              <p>Convenience Fee: <span id="convenienceFee">₹0</span></p>
+              <hr />
+              <p class="total">
+                Total Amount: <span id="totalAmount">₹0</span>
+              </p>
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="input-group">
-            <i class="fas fa-calendar"></i>
-            <input type="date" id="journeyDate" required />
+        <div class="payment-section">
+          <h3>Payment Details</h3>
+          <div class="payment-methods">
+            <div class="payment-method">
+              <input type="radio" id="upi" name="paymentMethod" value="upi" />
+              <label for="upi"><i class="fas fa-mobile-alt"></i> UPI</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" id="card" name="paymentMethod" value="card" />
+              <label for="card"
+                ><i class="fas fa-credit-card"></i> Credit/Debit Card</label
+              >
+            </div>
+            <div class="payment-method">
+              <input
+                type="radio"
+                id="netBanking"
+                name="paymentMethod"
+                value="netBanking"
+              />
+              <label for="netBanking"
+                ><i class="fas fa-university"></i> Net Banking</label
+              >
+            </div>
           </div>
-          <div class="input-group">
-            <i class="fas fa-train"></i>
-            <select id="classType">
-              <option value="">All Classes</option>
-              <option value="1A">First AC (1A)</option>
-              <option value="2A">Second AC (2A)</option>
-              <option value="3A">Third AC (3A)</option>
-              <option value="SL">Sleeper (SL)</option>
-            </select>
+
+          <div class="payment-details" id="paymentDetails">
+            <!-- Payment form will be dynamically loaded based on selection -->
           </div>
-        </div>
 
-        <div class="form-group checkboxes">
-         
-          <label>
-            <input type="checkbox" id="divyangConcession" />
-            Person With Disability Concession
-          </label>
-          <label>
-            <input type="checkbox" id="railwayPass" />
-            Railway Pass Concession
-          </label>
-        </div>
-
-        <div class="button-group">
-          <button type="submit" class="search-btn">Search</button>
-          <button type="button" class="booking-btn">
-            Easy Booking on AskDISHA
+          <button class="proceed-btn" id="proceedToPayment">
+            Proceed to Payment
           </button>
         </div>
-      </form>
+      </div>
     </div>
 
-    <script src="assets/session.js"></script>
-    <script src="assets/js/book-ticket.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get elements
+        const incrementBtn = document.getElementById("incrementSeats");
+        const decrementBtn = document.getElementById("decrementSeats");
+        const numberOfSeats = document.getElementById("numberOfSeats");
+        const seatClass = document.getElementById("seatClass");
+
+        // Base fares
+        const baseFares = {
+          SL: 400,
+          "3A": 1000,
+          "2A": 1800,
+          "1A": 3000,
+        };
+
+        // Increment button click handler
+        incrementBtn.addEventListener("click", function () {
+          let count = parseInt(numberOfSeats.value);
+          if (count < 6) {
+            count++;
+            numberOfSeats.value = count;
+            updatePrices();
+          }
+        });
+
+        // Decrement button click handler
+        decrementBtn.addEventListener("click", function () {
+          let count = parseInt(numberOfSeats.value);
+          if (count > 1) {
+            count--;
+            numberOfSeats.value = count;
+            updatePrices();
+          }
+        });
+
+        // Update prices
+        function updatePrices() {
+          const count = parseInt(numberOfSeats.value);
+          const fare = baseFares[seatClass.value];
+          const baseFare = fare * count;
+          const gst = Math.round(baseFare * 0.05);
+          const convenienceFee = 30 * count;
+          const total = baseFare + gst + convenienceFee;
+
+          document.getElementById("baseFare").textContent = "₹" + baseFare;
+          document.getElementById("gst").textContent = "₹" + gst;
+          document.getElementById("convenienceFee").textContent =
+            "₹" + convenienceFee;
+          document.getElementById("totalAmount").textContent = "₹" + total;
+
+          // Update button states
+          decrementBtn.disabled = count <= 1;
+          incrementBtn.disabled = count >= 6;
+        }
+
+        // Initialize
+        numberOfSeats.value = 1;
+        updatePrices();
+
+        // Add change handler for seat class
+        seatClass.addEventListener("change", updatePrices);
+      });
+    </script>
   </body>
 </html>

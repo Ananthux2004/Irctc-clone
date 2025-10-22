@@ -6,7 +6,7 @@ const User = require("./models/User");
 const createAdminUser = async () => {
   try {
     // Connect to MongoDB
-    await mongoose.connect("mongodb://localhost:27017/IRCTC");
+    await mongoose.connect("mongodb+srv://230265:230265@cluster0.wqsmnuy.mongodb.net/IRCTC?retryWrites=true&w=majority&appName=Cluster0");
     console.log("Connected to MongoDB");
 
     // Check if admin already exists
