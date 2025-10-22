@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Book Ticket - IRCTC Clone</title>
+    <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/book-ticket.css" />
     <link
       rel="stylesheet"
@@ -11,7 +12,92 @@
     />
   </head>
   <body>
-    <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div
+        class="container"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <!-- Left Logo -->
+        <img
+          src="images/right-logo.png"
+          alt="Left Logo"
+          style="
+            height: 64px;
+            width: 64px;
+            object-fit: contain;
+            margin-right: 10px;
+          "
+        />
+        <div
+          class="logo-section"
+          style="display: flex; align-items: center; gap: 10px"
+        >
+          <h1 style="margin: 0; font-size: 1.7rem">IRCTC</h1>
+        </div>
+        <nav
+          style="
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-left: auto;
+          "
+        >
+          <a href="index.html" class="nav-link">Home</a>
+          <div class="nav-dropdown">
+            <a href="#" class="nav-link active"
+              >Trains <i class="fas fa-caret-down"></i
+            ></a>
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item">View Trains</a>
+              <a href="book-ticket.html" class="dropdown-item">Book Tickets</a>
+              <a href="#" class="dropdown-item">Cancel Tickets</a>
+            </div>
+          </div>
+          <a href="#" class="nav-link">About Us</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
+          <a href="#" class="nav-link">Alerts</a>
+          <div class="auth-section" style="display: inline-block">
+            <a
+              href="login.html"
+              class="nav-link"
+              id="loginLink"
+              style="
+                background: #10467b;
+                color: #fff;
+                border-radius: 6px;
+                padding: 0.25rem 1rem;
+              "
+              >Login</a
+            >
+            <button
+              class="nav-link user-logout"
+              id="userInfo"
+              style="display: none"
+            >
+              <span id="username"></span>
+            </button>
+          </div>
+        </nav>
+        <!-- Right Logo -->
+        <img
+          src="images/left-logo.jpg"
+          alt="Right Logo"
+          style="
+            height: 64px;
+            width: 64px;
+            object-fit: contain;
+            margin-left: 10px;
+          "
+        />
+      </div>
+    </header>
+
+    <div class="main-container">
       <div class="booking-section">
         <h2>Book Your Ticket</h2>
         <div class="train-details" id="trainDetails">
@@ -24,10 +110,9 @@
             <div class="seat-type">
               <label for="seatClass">Select Class:</label>
               <select id="seatClass">
+                <option value="GEN">General</option>
                 <option value="SL">Sleeper (SL)</option>
-                <option value="3A">AC 3 Tier (3A)</option>
-                <option value="2A">AC 2 Tier (2A)</option>
-                <option value="1A">AC First Class (1A)</option>
+                <option value="AC">AC</option>
               </select>
             </div>
             <div class="seat-count">
@@ -111,10 +196,9 @@
 
         // Base fares
         const baseFares = {
+          GEN: 200,
           SL: 400,
-          "3A": 1000,
-          "2A": 1800,
-          "1A": 3000,
+          AC: 1000,
         };
 
         // Increment button click handler

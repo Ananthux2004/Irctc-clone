@@ -1,18 +1,68 @@
-.booking-container {
-  max-width: 800px;
+.main-container {
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 0 1rem;
+}
+
+.booking-section {
   background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.booking-section h2 {
+  color: #10467b;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-align: center;
+  position: relative;
+}
+
+.booking-section h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #ff6b00;
+  margin: 0.5rem auto;
+}
+
+.train-details {
+  background: #f8f9fa;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-left: 4px solid #10467b;
+}
+
+.train-details h3 {
+  color: #10467b;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.train-details p {
+  color: #555;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
 }
 
 /* Seat Selection and Payment Styles */
 .seat-selection {
-  margin: 2rem 0;
-  padding: 1rem;
-  background: #f8f9fa;
+  background: #fff;
   border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.seat-selection h3 {
+  color: #10467b;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .price-details {
@@ -42,22 +92,34 @@
 }
 
 .payment-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
   margin-top: 2rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+.payment-section h3 {
+  color: #10467b;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .payment-methods {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin: 1rem 0;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
 }
 
 .payment-method {
-  padding: 1rem;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
+  padding: 1.5rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  background: #f8f9fa;
 }
 
 .payment-method:hover {
@@ -200,6 +262,41 @@
   border-color: #28a745;
 }
 
+/* Price Details Enhancement */
+.price-details {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.price-details h4 {
+  color: #10467b;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.price-breakdown {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.price-breakdown hr {
+  border: none;
+  border-top: 2px dashed #dee2e6;
+  margin: 1rem 0;
+}
+
+.price-breakdown .total {
+  font-size: 1.2rem;
+  color: #10467b;
+  font-weight: 600;
+}
+
 /* Seat Counter Styles */
 .seat-counter {
   display: flex;
@@ -209,23 +306,25 @@
 }
 
 .counter-btn {
-  width: 36px;
-  height: 36px;
-  border: 1px solid #213d77;
-  background: #fff;
-  color: #213d77;
-  font-size: 20px;
-  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: #10467b;
+  color: #fff;
+  font-size: 1.2rem;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .counter-btn:hover {
-  background: #213d77;
-  color: #fff;
+  background: #0d3861;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .counter-btn:disabled {

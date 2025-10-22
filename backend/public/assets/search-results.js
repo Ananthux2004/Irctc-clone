@@ -92,84 +92,223 @@ function createTrainCard(train) {
   card.className = "train-card";
 
   const availableSeats = train.availableSeats || {
-    sleeper: 0,
-    ac: 0,
-    general: 0,
+    sleeper: Math.floor(Math.random() * 50) + 1, // Random number between 1 and 50 for testing
+    ac: Math.floor(Math.random() * 30) + 1, // Random number between 1 and 30 for testing
+    general: Math.floor(Math.random() * 100) + 1, // Random number between 1 and 100 for testing
   };
 
   card.innerHTML = `
+        <button onclick="bookTicket('${
+          train.id
+        }', 'Sleeper')" class="book-now-btn">Book Now</button>
         <div class="train-header">
             <div class="train-name">${train.name}</div>
-            <div class="train-number">#${train.number}</div>
+            <div class="train-number">${train.number}</div>
         </div>
         <div class="train-schedule">
             <div class="schedule-item">
-                <div class="time">${train.departureTime}</div>
                 <div class="station">${train.source}</div>
+                <div class="datetime-info">
+                    <span>${new Date(journeyDate).toLocaleDateString("en-US", {
+                      weekday: "short",
+                      month: "short",
+                      day: "numeric",
+                    })}</span>
+                    <span class="datetime-separator">|</span>
+                    <span>${train.departureTime}</span>
+                </div>
+            </div>
+            <div class="schedule-arrow">
+                <i class="fas fa-arrow-right"></i>
             </div>
             <div class="schedule-item">
-                <div class="time">${train.arrivalTime}</div>
                 <div class="station">${train.destination}</div>
-            </div>
-        </div>
-        <div class="train-info">
-            <div class="info-item">
-                <span class="info-label">Duration:</span>
-                <span class="info-value">${train.duration}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Days:</span>
-                <span class="info-value">${train.runningDays.join(", ")}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Status:</span>
-                <span class="info-value">${train.status}</span>
-            </div>
-        </div>
-        <div class="fare-section">
-            ${Object.entries(train.fareDetails)
-              .map(
-                ([className, fare]) => `
-                <div class="class-fare">
-                    <div class="class-info">
-                        <span>${className}</span>
-                        <span class="seats-info">Available: ${
-                          className === "AC"
-                            ? availableSeats.ac
-                            : className === "Sleeper"
-                            ? availableSeats.sleeper
-                            : availableSeats.general
-                        }</span>
-                    </div>
-                    <div class="fare-info">
-                        <span>₹${fare}</span>
-                        <button onclick="bookTicket('${
-                          train.id
-                        }', '${className}')" class="book-btn">Book</button>
-                    </div>
+                <div class="datetime-info">
+                    <span>${new Date(journeyDate).toLocaleDateString("en-US", {
+                      weekday: "short",
+                      month: "short",
+                      day: "numeric",
+                    })}</span>
+                    <span class="datetime-separator">|</span>
+                    <span>${train.arrivalTime}</span>
                 </div>
-            `
-              )
-              .join("")}
+            </div>
         </div>
+        <div class="runs-on">
+            <div class="runs-on-title" style="color: #666; margin-bottom: 8px;">Runs On</div>
+            <div class="days-list">
+                ${(() => {
+                  const daysMap = [
+                    { short: "M", full: "Monday" },
+                    { short: "T", full: "Tuesday" },
+                    { short: "W", full: "Wednesday" },
+                    { short: "T", full: "Thursday" },
+                    { short: "F", full: "Friday" },
+                    { short: "S", full: "Saturday" },
+                    { short: "S", full: "Sunday" },
+                  ];
+
+                  return daysMap
+                    .map((day) => {
+                      const runs =
+                        Array.isArray(train.runningDays) &&
+                        train.runningDays.includes(day.full);
+
+                      return `
+                            <span class="day-indicator ${
+                              runs ? "day-active" : "day-inactive"
+                            }" 
+                                  title="${
+                                    runs
+                                      ? `Runs on ${day.full}`
+                                      : `No service on ${day.full}`
+                                  }">
+                                ${day.short}
+                            </span>`;
+                    })
+                    .join("");
+                })()}
+            </div>
+        </div>
+        <div class="seat-class-nav">
+            <div class="seat-class-tabs">
+                <button class="seat-class-tab active" data-class="Sleeper">Sleeper</button>
+                <button class="seat-class-tab" data-class="AC">AC</button>
+                <button class="seat-class-tab" data-class="General">General</button>
+            </div>
+            <div class="availability-section">
+                <div class="availability-scroll">
+                    ${(() => {
+                      const today = new Date(journeyDate);
+                      const availabilityCards = [];
+
+                      // Generate next 6 days including today
+                      for (let i = 0; i < 6; i++) {
+                        const date = new Date(today);
+                        date.setDate(date.getDate() + i);
+
+                        // Default to Sleeper class for initial display
+                        const seats = availableSeats.sleeper;
+
+                        const availability =
+                          seats > 0
+                            ? `${seats} Seats`
+                            : "WL" + Math.floor(Math.random() * 100); // Simulated waitlist
+
+                        const statusClass = seats > 0 ? "available" : "waiting";
+
+                        availabilityCards.push(`
+                                <div class="availability-card">
+                                    <div class="availability-date">
+                                        ${date.toLocaleDateString("en-US", {
+                                          weekday: "short",
+                                          month: "short",
+                                          day: "numeric",
+                                        })}
+                                    </div>
+                                    <div class="availability-status ${statusClass}">
+                                        ${availability}
+                                    </div>
+                                </div>
+                            `);
+                      }
+                      return availabilityCards.join("");
+                    })()}
+                </div>
+            </div>
+        </div>
+        
     `;
+  // Add event listeners for seat class tabs
+  requestAnimationFrame(() => {
+    const tabs = card.querySelectorAll(".seat-class-tab");
+    const availabilitySection = card.querySelector(".availability-scroll");
+
+    function updateAvailabilityDisplay(selectedClass) {
+      const seatsByClass = {
+        AC: availableSeats.ac,
+        Sleeper: availableSeats.sleeper,
+        General: availableSeats.general,
+      };
+      const seats = seatsByClass[selectedClass] || 0;
+
+      const today = new Date(journeyDate);
+      availabilitySection.innerHTML = Array.from({ length: 6 }, (_, i) => {
+        const date = new Date(today);
+        date.setDate(date.getDate() + i);
+
+        const availability =
+          seats > 0 ? `${seats} Seats` : "WL" + Math.floor(Math.random() * 100);
+
+        const statusClass = seats > 0 ? "available" : "waiting";
+
+        return `
+          <div class="availability-card" onclick="selectDate(this, '${date.toISOString()}', '${selectedClass}', ${
+          train.id
+        })">
+            <div class="availability-date">
+              ${date.toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              })}
+            </div>
+            <div class="availability-status ${statusClass}">
+              ${availability}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        // Update active tab
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const selectedClass = tab.dataset.class;
+        updateAvailabilityDisplay(selectedClass);
+      });
+    });
+
+    // Initialize with default class (Sleeper)
+    updateAvailabilityDisplay("Sleeper");
+  });
+
   return card;
 }
 
 // Function to handle ticket booking
-function bookTicket(trainId, className) {
+function bookTicket(trainId, className, selectedDate = journeyDate) {
   // Store booking details in session storage
   const bookingDetails = {
     trainId,
     class: className,
     from: fromStation,
     to: toStation,
-    date: journeyDate,
+    date: selectedDate,
   };
   sessionStorage.setItem("bookingDetails", JSON.stringify(bookingDetails));
 
   // Redirect to booking page
   window.location.href = "/book-ticket.html";
+}
+
+// Function to handle date selection
+function selectDate(card, selectedDate, selectedClass, trainId) {
+  // Remove selected class from all cards in the same train card
+  const trainCard = card.closest(".train-card");
+  trainCard.querySelectorAll(".availability-card").forEach((c) => {
+    c.classList.remove("selected");
+  });
+
+  // Add selected class to clicked card
+  card.classList.add("selected");
+
+  // Update the book now button to use selected date and class
+  const bookButton = trainCard.querySelector(".book-now-btn");
+  bookButton.onclick = () => bookTicket(trainId, selectedClass, selectedDate);
 }
 
 // Initial search with URL parameters
