@@ -178,76 +178,174 @@
           <div class="payment-details" id="paymentDetails">
             <!-- Payment form will be dynamically loaded based on selection -->
           </div>
-
+          <div class = "button-container">
           <button class="proceed-btn" id="proceedToPayment">
             Proceed to Payment
           </button>
+          </div>
         </div>
       </div>
     </div>
 
+  <div id="billingPopup" class="popup-overlay">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closeBillingPopup()">&times;</span>
+      <h2>Billing Summary</h2>
+      <div id="billingDetails">
+        <!-- Dynamic content will be injected here -->
+      </div>
+      <div class="popup-actions">
+        <button onclick="closeBillingPopup()">Close</button>
+        <button id="payNow">Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Separate overlay for checkmark animation -->
+  <div id="checkmarkOverlay" class="hidden">
+    <div id="checkmarkContainer">
+      <svg class="checkmark" viewBox="0 0 52 52">
+        <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16"/>
+      </svg>
+      <p class="paid-text">Paid</p>
+    </div>
+  </div>
+
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Get elements
-        const incrementBtn = document.getElementById("incrementSeats");
-        const decrementBtn = document.getElementById("decrementSeats");
-        const numberOfSeats = document.getElementById("numberOfSeats");
-        const seatClass = document.getElementById("seatClass");
+  // Get elements
+  const incrementBtn = document.getElementById("incrementSeats");
+  const decrementBtn = document.getElementById("decrementSeats");
+  const numberOfSeats = document.getElementById("numberOfSeats");
+  const seatClass = document.getElementById("seatClass");
+  const proceedBtn = document.getElementById("proceedToPayment");
 
-        // Base fares
-        const baseFares = {
-          GEN: 200,
-          SL: 400,
-          AC: 1000,
-        };
+  // Base fares
+  const baseFares = {
+    GEN: 200,
+    SL: 400,
+    AC: 1000,
+  };
 
-        // Increment button click handler
-        incrementBtn.addEventListener("click", function () {
-          let count = parseInt(numberOfSeats.value);
-          if (count < 6) {
-            count++;
-            numberOfSeats.value = count;
-            updatePrices();
-          }
-        });
+  // Prices
+  let baseFare = 0;
+  let gst = 0;
+  let convenienceFee = 0;
+  let total = 0;
 
-        // Decrement button click handler
-        decrementBtn.addEventListener("click", function () {
-          let count = parseInt(numberOfSeats.value);
-          if (count > 1) {
-            count--;
-            numberOfSeats.value = count;
-            updatePrices();
-          }
-        });
+  // Increment button click handler
+  incrementBtn.addEventListener("click", function () {
+    let count = parseInt(numberOfSeats.value);
+    if (count < 6) {
+      count++;
+      numberOfSeats.value = count;
+      updatePrices();
+    }
+  });
 
-        // Update prices
-        function updatePrices() {
-          const count = parseInt(numberOfSeats.value);
-          const fare = baseFares[seatClass.value];
-          const baseFare = fare * count;
-          const gst = Math.round(baseFare * 0.05);
-          const convenienceFee = 30 * count;
-          const total = baseFare + gst + convenienceFee;
+  // Decrement button click handler
+  decrementBtn.addEventListener("click", function () {
+    let count = parseInt(numberOfSeats.value);
+    if (count > 1) {
+      count--;
+      numberOfSeats.value = count;
+      updatePrices();
+    }
+  });
 
-          document.getElementById("baseFare").textContent = "₹" + baseFare;
-          document.getElementById("gst").textContent = "₹" + gst;
-          document.getElementById("convenienceFee").textContent =
-            "₹" + convenienceFee;
-          document.getElementById("totalAmount").textContent = "₹" + total;
+  // Update prices
+  function updatePrices() {
+    const count = parseInt(numberOfSeats.value);
+    const fare = baseFares[seatClass.value];
+    baseFare = fare * count;
+    gst = Math.round(baseFare * 0.05);
+    convenienceFee = 30 * count;
+    total = baseFare + gst + convenienceFee;
 
-          // Update button states
-          decrementBtn.disabled = count <= 1;
-          incrementBtn.disabled = count >= 6;
-        }
+    document.getElementById("baseFare").textContent = "₹" + baseFare;
+    document.getElementById("gst").textContent = "₹" + gst;
+    document.getElementById("convenienceFee").textContent = "₹" + convenienceFee;
+    document.getElementById("totalAmount").textContent = "₹" + total;
 
-        // Initialize
-        numberOfSeats.value = 1;
-        updatePrices();
+    decrementBtn.disabled = count <= 1;
+    incrementBtn.disabled = count >= 6;
+  }
 
-        // Add change handler for seat class
-        seatClass.addEventListener("change", updatePrices);
-      });
+  // Initialize
+  numberOfSeats.value = 1;
+  updatePrices();
+
+  seatClass.addEventListener("change", updatePrices);
+
+  // Billing popup logic
+  proceedBtn.addEventListener("click", function () {
+    const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked');
+    if (!selectedPayment) {
+      alert("Please select a payment method");
+      return;
+    }
+
+    const bookingDetails = {
+      userId: "U12345", // Replace with actual session value
+      trainId: "T98765", // Replace with actual URL param
+      seatClass: seatClass.value,
+      seats: parseInt(numberOfSeats.value),
+      baseFare: baseFare,
+      gst: gst,
+      convenienceFee: convenienceFee,
+      totalAmount: total,
+      paymentMethod: selectedPayment.value
+    };
+
+    const billingDetails = document.getElementById("billingDetails");
+    billingDetails.innerHTML = `
+      <p><strong>User ID:</strong> ${bookingDetails.userId}</p>
+      <p><strong>Train ID:</strong> ${bookingDetails.trainId}</p>
+      <p><strong>Seat Class:</strong> ${bookingDetails.seatClass}</p>
+      <p><strong>Seats:</strong> ${bookingDetails.seats}</p>
+      <p><strong>Base Fare:</strong> ₹${bookingDetails.baseFare}</p>
+      <p><strong>GST (5%):</strong> ₹${bookingDetails.gst}</p>
+      <p><strong>Convenience Fee:</strong> ₹${bookingDetails.convenienceFee}</p>
+      <p><strong>Total Amount:</strong> ₹${bookingDetails.totalAmount}</p>
+      <p><strong>Payment Method:</strong> ${bookingDetails.paymentMethod}</p>
+    `;
+
+    // Show billing popup
+    document.getElementById("billingPopup").style.display = "flex";
+    // Make sure checkmark is hidden initially
+    const checkmarkOverlay = document.getElementById("checkmarkOverlay");
+    checkmarkOverlay.style.display = "none";
+  });
+
+  // Close popup
+  window.closeBillingPopup = function () {
+    document.getElementById("billingPopup").style.display = "none";
+    document.getElementById("checkmarkOverlay").style.display = "none";
+  };
+});
+
+// Initialize the payment button handler
+document.getElementById("payNow").addEventListener("click", function() {
+  // Show the checkmark animation
+  const checkmarkOverlay = document.getElementById("checkmarkOverlay");
+  checkmarkOverlay.style.display = "flex";
+
+  // Dim the billing popup content
+  document.querySelector(".popup-content").classList.add("inactive");
+
+  // Auto-close both popups after animation
+  setTimeout(function() {
+    document.getElementById("billingPopup").style.display = "none";
+    checkmarkOverlay.style.display = "none";
+    document.querySelector(".popup-content").classList.remove("inactive");
+    
+    // TODO: Add redirection to confirmation page or other post-payment logic here
+  }, 2000);
+});
+
+
     </script>
   </body>
 </html>
