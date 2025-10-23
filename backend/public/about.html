@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Us </title>
+  <meta name="description" content="Aurora Railways — a secure, authorised travel booking platform for train tickets and travel services. Transparent pricing, reliable support." />
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; line-height:1.6; color:#111; margin:0; padding:0; background:#f7fafc; }
+    .container { max-width:920px; margin:40px auto; background:#fff; padding:32px; border-radius:12px; box-shadow:0 6px 30px rgba(10,10,10,0.06); }
+    h1 { margin-top:0; font-size:28px; }
+    h2 { margin-bottom:8px; font-size:18px; color:#0b63a3; }
+    p { margin:12px 0; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px; }
+    
+    /* ✅ Light blue cards */
+    .card { 
+      padding:16px; 
+      border-radius:8px; 
+      background:#e6f4ff;        /* light blue background */
+      border:1px solid #99ccff;  /* soft blue border */
+    }
+
+    .footer { margin-top:22px; font-size:13px; color:#555; }
+    .cta { display:inline-block; margin-top:12px; padding:10px 16px; border-radius:8px; text-decoration:none; background:#0b63a3; color:#fff; }
+    @media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-labelledby="aboutHeading">
+    <h1 id="aboutHeading">About us</h1>
+    <p><strong>IRCTC Clone</strong> is an independent travel booking platform focused on making train travel simple, secure and transparent for travellers across India. We provide an easy-to-use interface for searching schedules, comparing fares, and purchasing train tickets — backed by secure payments and customer support.</p>
+
+    <h2>Our mission</h2>
+    <p>To make rail travel frictionless by combining clear pricing, real-time availability, and helpful customer service — so travellers can plan journeys with confidence.</p>
+
+    <div class="grid" role="region" aria-label="Key highlights">
+      <div class="card">
+        <h3>What we offer</h3>
+        <ul>
+          <li>Search and compare train schedules and fares</li>
+          <li>Secure online ticket booking and e-tickets</li>
+          <li>Booking assistance and 24/7 customer support</li>
+          <li>Transparent fees — no hidden charges</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Safety & compliance</h3>
+        <p>Customer safety is our top priority. We use industry-standard encryption for payments, follow data-protection best practices, and comply with applicable laws and regulations. Our refund and cancellation policies are clearly available on every booking page.</p>
+      </div>
+    </div>
+
+    <h2>How we're different</h2>
+    <p>We focus on clarity and trust. Every fare and fee is shown up front, and our support team is available by phone, chat, or email to help with booking issues. We partner only with verified payment providers and travel service partners.</p>
+
+    <h2>Transparency & partnerships</h2>
+    <p>We work with certified payment processors and licensed travel partners. If you need an invoice, structured group bookings, or corporate travel solutions, our team can provide tailored support.</p>
+
+    <h2>Contact & support</h2>
+    <p>If you have questions, cancellations, or need help with a booking, contact us:</p>
+    <ul>
+      <li>Email: <a href="mailto:support@aurorarailways.example">support@gmail.com</a></li>
+      <li>Phone: +91 8547063259 (Mon–Sun, 7am–11pm IST)</li>
+      <li>Support Center: <a href="/help">Help & FAQs</a></li>
+    </ul>
+
+    <div class="footer" role="contentinfo">
+      <p><strong>Important legal notice:</strong> This is an independent travel platform and is <strong>not affiliated with IRCTC</strong>. We are a separate company and operate under our own authorization and policies. Always verify ticket authenticity through official channels and your booking confirmation.</p>
+      
+    </div>
+
+    <a href="/contact" class="cta" role="button">Contact our support team</a>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = (new Date()).getFullYear();
+  </script>
+</body>
+</html>
