@@ -65,54 +65,168 @@
 }
 
 .train-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .train-card {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.book-now-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  padding: 10px 24px;
+  background-color: #ff6b01;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.book-now-btn:hover {
+  background-color: #e65600;
 }
 
 .train-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 15px;
   border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .train-name {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+  font-size: 22px;
+  font-weight: 600;
+  color: #10467b;
+  letter-spacing: -0.5px;
 }
 
 .train-number {
-  font-size: 14px;
+  font-size: 15px;
   color: #666;
+  background: #f0f3f6;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 500;
 }
 
 .train-schedule {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin: 15px 0;
+  margin: 20px 0;
+  position: relative;
 }
 
 .schedule-item {
-  text-align: center;
+  text-align: left;
+  flex: 1;
+}
+
+.schedule-arrow {
+  color: #10467b;
+  font-size: 20px;
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.schedule-arrow::before,
+.schedule-arrow::after {
+  content: "";
+  height: 1px;
+  background: #10467b;
+  flex: 1;
 }
 
 .time {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  margin-left: 222px;
 }
 
 .station {
-  font-size: 14px;
+  font-size: 25px;
+  color: #333;
+  margin-bottom: 12px;
+  font-weight: 500;
+  margin-left: 222px;
+}
+
+.datetime-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #666;
+  font-size: 14px;
+  margin-left: 222px;
+}
+
+.datetime-separator {
+  color: #ccc;
+  font-weight: 300;
+}
+
+.runs-on {
+  text-align: center;
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.day-indicator {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  margin: 0 4px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.day-active {
+  background: #10467b;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(16, 70, 123, 0.2);
+}
+
+.day-inactive {
+  background: #eef1f4;
+  color: #999;
+  border: none;
+}
+
+.days-list {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 0;
 }
 
 .train-info {
@@ -134,16 +248,113 @@
   font-weight: bold;
 }
 
-.fare-section {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
+.seat-class-nav {
+  margin: 20px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.class-fare {
+.seat-class-tabs {
   display: flex;
-  justify-content: space-between;
-  margin: 5px 0;
+  gap: 4px;
+  margin-bottom: -1px;
+}
+
+.seat-class-tab {
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
+}
+
+.seat-class-tab:hover {
+  background: #f0f3f6;
+}
+
+.seat-class-tab.active {
+  background: white;
+  color: #10467b;
+  border-color: #eee;
+  border-bottom: 2px solid white;
+  margin-bottom: -1px;
+}
+
+.availability-section {
+  padding: 15px 0;
+  overflow: hidden;
+}
+
+.availability-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 0 16px;
+  scrollbar-width: thin;
+  scrollbar-color: #10467b #f0f3f6;
+}
+
+.availability-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.availability-scroll::-webkit-scrollbar-track {
+  background: #f0f3f6;
+  border-radius: 3px;
+}
+
+.availability-scroll::-webkit-scrollbar-thumb {
+  background: #10467b;
+  border-radius: 3px;
+}
+
+.availability-card {
+  min-width: 120px;
+  padding: 12px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.availability-card:hover {
+  border-color: #10467b;
+  box-shadow: 0 2px 4px rgba(16, 70, 123, 0.1);
+}
+
+.availability-card.selected {
+  border-color: #10467b;
+  background-color: #f0f7ff;
+  box-shadow: 0 2px 6px rgba(16, 70, 123, 0.2);
+}
+
+.availability-date {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.availability-status {
+  font-weight: 500;
+  color: #333;
+}
+
+.availability-status.available {
+  color: #2e7d32;
+}
+
+.availability-status.waiting {
+  color: #ed6c02;
+}
+
+.availability-status.not-available {
+  color: #d32f2f;
 }
 
 @media (max-width: 768px) {
