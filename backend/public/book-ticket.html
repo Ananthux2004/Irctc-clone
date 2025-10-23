@@ -186,68 +186,7 @@
       </div>
     </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Get elements
-        const incrementBtn = document.getElementById("incrementSeats");
-        const decrementBtn = document.getElementById("decrementSeats");
-        const numberOfSeats = document.getElementById("numberOfSeats");
-        const seatClass = document.getElementById("seatClass");
-
-        // Base fares
-        const baseFares = {
-          GEN: 200,
-          SL: 400,
-          AC: 1000,
-        };
-
-        // Increment button click handler
-        incrementBtn.addEventListener("click", function () {
-          let count = parseInt(numberOfSeats.value);
-          if (count < 6) {
-            count++;
-            numberOfSeats.value = count;
-            updatePrices();
-          }
-        });
-
-        // Decrement button click handler
-        decrementBtn.addEventListener("click", function () {
-          let count = parseInt(numberOfSeats.value);
-          if (count > 1) {
-            count--;
-            numberOfSeats.value = count;
-            updatePrices();
-          }
-        });
-
-        // Update prices
-        function updatePrices() {
-          const count = parseInt(numberOfSeats.value);
-          const fare = baseFares[seatClass.value];
-          const baseFare = fare * count;
-          const gst = Math.round(baseFare * 0.05);
-          const convenienceFee = 30 * count;
-          const total = baseFare + gst + convenienceFee;
-
-          document.getElementById("baseFare").textContent = "₹" + baseFare;
-          document.getElementById("gst").textContent = "₹" + gst;
-          document.getElementById("convenienceFee").textContent =
-            "₹" + convenienceFee;
-          document.getElementById("totalAmount").textContent = "₹" + total;
-
-          // Update button states
-          decrementBtn.disabled = count <= 1;
-          incrementBtn.disabled = count >= 6;
-        }
-
-        // Initialize
-        numberOfSeats.value = 1;
-        updatePrices();
-
-        // Add change handler for seat class
-        seatClass.addEventListener("change", updatePrices);
-      });
-    </script>
+    <script src="assets/session.js"></script>
+    <script src="assets/book-ticket.js"></script>
   </body>
 </html>

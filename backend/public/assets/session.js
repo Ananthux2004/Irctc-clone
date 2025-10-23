@@ -1,6 +1,21 @@
 // session.js - Utility functions for session management
-
 const session = {
+  // Check if user is logged in
+  checkSession() {
+    const user = this.getSession();
+    return !!user;
+  },
+
+  // Get user data
+  getUserData() {
+    return this.getSession();
+  },
+
+  // Get session
+  getSession() {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  },
   // Save user session data
   saveSession(userData) {
     localStorage.setItem("user", JSON.stringify(userData));
