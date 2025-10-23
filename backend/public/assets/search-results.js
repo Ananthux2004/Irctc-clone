@@ -181,23 +181,27 @@ function createTrainCard(train) {
                     ${(() => {
                       const today = new Date(journeyDate);
                       const availabilityCards = [];
+                      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-                      // Generate next 6 days including today
-                      for (let i = 0; i < 6; i++) {
+                      // Generate next 14 days and filter for running days only
+                      for (let i = 0; i < 14; i++) {
                         const date = new Date(today);
                         date.setDate(date.getDate() + i);
+                        const dayName = daysOfWeek[date.getDay()];
 
-                        // Default to Sleeper class for initial display
-                        const seats = availableSeats.sleeper;
+                        // Check if train runs on this day
+                        if (Array.isArray(train.runningDays) && train.runningDays.includes(dayName)) {
+                          // Default to Sleeper class for initial display
+                          const seats = availableSeats.sleeper;
 
-                        const availability =
-                          seats > 0
-                            ? `${seats} Seats`
-                            : "WL" + Math.floor(Math.random() * 100); // Simulated waitlist
+                          const availability =
+                            seats > 0
+                              ? `${seats} Seats`
+                              : "WL" + Math.floor(Math.random() * 100); // Simulated waitlist
 
-                        const statusClass = seats > 0 ? "available" : "waiting";
+                          const statusClass = seats > 0 ? "available" : "waiting";
 
-                        availabilityCards.push(`
+                          availabilityCards.push(`
                                 <div class="availability-card">
                                     <div class="availability-date">
                                         ${date.toLocaleDateString("en-US", {
@@ -211,7 +215,14 @@ function createTrainCard(train) {
                                     </div>
                                 </div>
                             `);
+                        }
                       }
+
+                      // If no cards were created, show a message
+                      if (availabilityCards.length === 0) {
+                        return '<div class="no-availability">No service scheduled for the next 14 days</div>';
+                      }
+
                       return availabilityCards.join("");
                     })()}
                 </div>
@@ -224,41 +235,52 @@ function createTrainCard(train) {
     const tabs = card.querySelectorAll(".seat-class-tab");
     const availabilitySection = card.querySelector(".availability-scroll");
 
-    function updateAvailabilityDisplay(selectedClass) {
+      function updateAvailabilityDisplay(selectedClass) {
       const seatsByClass = {
         AC: availableSeats.ac,
         Sleeper: availableSeats.sleeper,
         General: availableSeats.general,
       };
       const seats = seatsByClass[selectedClass] || 0;
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
       const today = new Date(journeyDate);
-      availabilitySection.innerHTML = Array.from({ length: 6 }, (_, i) => {
+      const availabilityCards = [];
+
+      // Generate next 14 days and filter for running days only
+      for (let i = 0; i < 14; i++) {
         const date = new Date(today);
         date.setDate(date.getDate() + i);
+        const dayName = daysOfWeek[date.getDay()];
 
-        const availability =
-          seats > 0 ? `${seats} Seats` : "WL" + Math.floor(Math.random() * 100);
+        // Check if train runs on this day
+        if (Array.isArray(train.runningDays) && train.runningDays.includes(dayName)) {
+          const availability =
+            seats > 0 ? `${seats} Seats` : "WL" + Math.floor(Math.random() * 100);
 
-        const statusClass = seats > 0 ? "available" : "waiting";
-
-        return `
-          <div class="availability-card" onclick="selectDate(this, '${date.toISOString()}', '${selectedClass}', ${
-          train.id
-        })">
-            <div class="availability-date">
-              ${date.toLocaleDateString("en-US", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              })}
+          const statusClass = seats > 0 ? "available" : "waiting";
+          
+          availabilityCards.push(`
+            <div class="availability-card" onclick="selectDate(this, '${date.toISOString()}', '${selectedClass}', ${train.id})">
+                <div class="availability-date">
+                  ${date.toLocaleDateString("en-US", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </div>
+                <div class="availability-status ${statusClass}">
+                  ${availability}
+                </div>
             </div>
-            <div class="availability-status ${statusClass}">
-              ${availability}
-            </div>
-          </div>
-        `;
-      }).join("");
+          `);
+        }
+      }
+
+      // If no cards were created, show a message
+      availabilitySection.innerHTML = availabilityCards.length === 0
+        ? '<div class="no-availability">No service scheduled for the next 14 days</div>'
+        : availabilityCards.join("");
     }
 
     tabs.forEach((tab) => {
