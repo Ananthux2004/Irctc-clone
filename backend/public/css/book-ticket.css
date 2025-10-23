@@ -344,3 +344,226 @@
   padding: 0;
   background: #fff;
 }
+
+#proceedToPayment {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0078D4;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+#proceedToPayment:hover {
+  background-color: #005a9e;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+  background: #fefefe;
+  padding: 25px 35px;
+  border-radius: 12px;
+  width: 420px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* Heading */
+.popup-content h2 {
+  margin-top: 0;
+  font-size: 22px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Billing Details */
+#billingDetails {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #444;
+}
+
+#billingDetails p {
+  margin: 10px 0;
+  line-height: 1.6;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed #e0e0e0;
+  padding-bottom: 6px;
+}
+
+#billingDetails p strong {
+  color: #222;
+  font-weight: 500;
+}
+
+/* Close Button at Bottom */
+.popup-content button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+
+.popup-content button:hover {
+  background-color: #005fa3;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.popup-actions button {
+  padding: 10px 20px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup-actions button:hover {
+  background-color: #005fa3;
+}
+
+/* Checkmark Animation */
+
+/* Hide initially */
+.hidden {
+  display: none;
+}
+
+#checkmarkOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1001; /* Higher than popup-overlay */
+  display: none; /* Hide by default */
+}
+
+#checkmarkContainer {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.checkmark {
+  width: 100px;
+  height: 100px;
+  stroke: #4CAF50;
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: draw 1s ease-out forwards;
+}
+
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke 0.6s ease-out forwards;
+}
+
+.checkmark-check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s 0.6s ease-out forwards;
+}
+
+.paid-text {
+  font-size: 20px;
+  color: #4CAF50;
+  margin-top: 10px;
+  font-weight: bold;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes stroke {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.popup-content.inactive {
+  opacity: 0.4;
+  pointer-events: none;
+}
