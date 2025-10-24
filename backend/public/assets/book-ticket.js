@@ -177,9 +177,18 @@ function setupAllHandlers() {
 // Initialize page when DOM is loaded
 document.addEventListener("DOMContentLoaded", async () => {
   // Check session first
+  const sessionData = session.getUserData();
+  console.log("Current session data:", sessionData);
+
   if (!session.checkSession()) {
+    console.log("No valid session found, redirecting to login");
+    // Store the current URL before redirecting
+    const currentUrl = window.location.href;
+    localStorage.setItem("redirectAfterLogin", currentUrl);
     window.location.href = "/login.html";
     return;
+  } else {
+    console.log("Valid session found:", sessionData);
   }
 
   // Initialize variables
@@ -208,13 +217,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize booking functionality with state values
   initializeBookingPage(state.trainId, fromStation, toStation, date);
 
-  // Display user info in navbar
-  const userData = session.getUserData();
-  if (userData && userData.username) {
-    const userInfo = document.getElementById("userInfo");
-    if (userInfo) {
-      userInfo.textContent = userData.username;
-    }
+  // Update header UI
+  if (window.headerUI) {
+    window.headerUI.update();
   }
 
   // Initialize form handling
@@ -508,4 +513,3 @@ function initializeForm() {
     });
   });
 }
-
