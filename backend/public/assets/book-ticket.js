@@ -1,124 +1,225 @@
-// Import session utilities
-import { getUserData, checkSession } from "./session.js";
-
-// Base fare for different classes
-const baseFares = {
-  SL: 400,
-  "3A": 1000,
-  "2A": 1800,
-  "1A": 3000,
+// Global variables for DOM elements
+const elements = {
+  seatClass: null,
+  numberOfSeats: null,
+  decrementBtn: null,
+  incrementBtn: null,
+  baseFare: null,
+  gst: null,
+  convenienceFee: null,
+  totalAmount: null,
 };
 
-// Check if user is logged in
-document.addEventListener("DOMContentLoaded", () => {
-  if (!checkSession()) {
+// Global state
+const state = {
+  basePrice: 0,
+  trainId: "",
+  urlParams: null,
+  selectedClass: "SL",
+  defaultPrices: {
+    AC: 1000,
+    SL: 400,
+    GEN: 200,
+    "3A": 1000, // AC class price
+  },
+  classMapping: {
+    SL: "sleeper",
+    AC: "ac",
+    GEN: "general",
+    "3A": "ac", // Map 3A to AC in database
+  },
+};
+
+// Initialize variables and setup functions
+function initializeVariables() {
+  state.urlParams = new URLSearchParams(window.location.search);
+  state.trainId = state.urlParams.get("trainId");
+  state.selectedClass = state.urlParams.get("class") || "SL";
+
+  // Initialize DOM elements
+  elements.seatClass = document.getElementById("seatClass");
+  elements.numberOfSeats = document.getElementById("numberOfSeats");
+  elements.decrementBtn = document.getElementById("decrementSeats");
+  elements.incrementBtn = document.getElementById("incrementSeats");
+  elements.baseFare = document.getElementById("baseFare");
+  elements.gst = document.getElementById("gst");
+  elements.convenienceFee = document.getElementById("convenienceFee");
+  elements.totalAmount = document.getElementById("totalAmount");
+
+  if (!state.trainId) {
+    console.error("No train ID provided in URL");
+    return false;
+  }
+
+  // Set initial values
+  if (elements.numberOfSeats) elements.numberOfSeats.value = 1;
+  if (elements.decrementBtn) elements.decrementBtn.disabled = true;
+  if (elements.seatClass) elements.seatClass.value = state.selectedClass;
+
+  console.log("Initialized with:", {
+    trainId: state.trainId,
+    selectedClass: state.selectedClass,
+    elements: Object.keys(elements).reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: elements[key] ? "Found" : "Not Found",
+      }),
+      {}
+    ),
+  });
+
+  return true;
+}
+
+// Function to update price details display
+function updatePriceDetails() {
+  console.log("Updating prices...");
+
+  const seatCount = parseInt(elements.numberOfSeats.value) || 1;
+  const currentClass = elements.seatClass.value;
+
+  console.log("Price calculation for:", {
+    currentClass,
+    seatCount,
+    basePrice: state.basePrice,
+  });
+
+  // Calculate total base fare based on number of seats
+  const baseFare = state.basePrice * seatCount;
+  const gst = Math.round(baseFare * 0.05);
+  const convenienceFee = 30 * seatCount;
+  const totalAmount = baseFare + gst + convenienceFee;
+
+  // Update price display
+  document.getElementById("baseFare").textContent = `₹${baseFare}`;
+  document.getElementById("gst").textContent = `₹${gst}`;
+  document.getElementById("convenienceFee").textContent = `₹${convenienceFee}`;
+  document.getElementById("totalAmount").textContent = `₹${totalAmount}`;
+}
+
+// Function to fetch train details and update price
+async function fetchTrainDetailsAndPrice() {
+  try {
+    const response = await fetch(`/api/trains/${state.trainId}`);
+    if (!response.ok) throw new Error("Failed to fetch train details");
+    const trainData = await response.json();
+
+    // Get the current selected class
+    const currentClass = elements.seatClass.value;
+    const dbField = state.classMapping[currentClass];
+
+    // Update base price using the mapping
+    state.basePrice =
+      trainData.price?.[dbField] || state.defaultPrices[currentClass] || 0;
+
+    console.log("Price mapping:", {
+      currentClass,
+      dbField,
+      trainPrice: trainData.price?.[dbField],
+      defaultPrice: state.defaultPrices[currentClass],
+      finalPrice: state.basePrice,
+    });
+
+    console.log("Fetched train details:", {
+      trainData,
+      selectedClass: state.selectedClass,
+      mappedClass: state.classMapping[state.selectedClass],
+      basePrice: state.basePrice,
+    });
+
+    // Update the price display immediately after fetching
+    updatePriceDetails();
+  } catch (error) {
+    console.error("Error fetching train details:", error);
+  }
+}
+
+// Setup all event handlers
+function setupAllHandlers() {
+  if (elements.incrementBtn) {
+    elements.incrementBtn.onclick = () => {
+      let count = parseInt(elements.numberOfSeats.value) || 1;
+      if (count < 6) {
+        count++;
+        elements.numberOfSeats.value = count;
+        updatePriceDetails();
+        elements.decrementBtn.disabled = false;
+        elements.incrementBtn.disabled = count >= 6;
+      }
+    };
+  }
+
+  if (elements.decrementBtn) {
+    elements.decrementBtn.onclick = () => {
+      let count = parseInt(elements.numberOfSeats.value) || 1;
+      if (count > 1) {
+        count--;
+        elements.numberOfSeats.value = count;
+        updatePriceDetails();
+        elements.incrementBtn.disabled = false;
+        elements.decrementBtn.disabled = count <= 1;
+      }
+    };
+  }
+
+  if (elements.seatClass) {
+    elements.seatClass.onchange = async (e) => {
+      console.log("Class changed to:", e.target.value);
+      await fetchTrainDetailsAndPrice();
+    };
+  }
+
+  if (elements.numberOfSeats) {
+    elements.numberOfSeats.onkeydown = (e) => e.preventDefault();
+  }
+}
+
+// Initialize page when DOM is loaded
+document.addEventListener("DOMContentLoaded", async () => {
+  // Check session first
+  const sessionData = session.getUserData();
+  console.log("Current session data:", sessionData);
+
+  if (!session.checkSession()) {
+    console.log("No valid session found, redirecting to login");
+    // Store the current URL before redirecting
+    const currentUrl = window.location.href;
+    localStorage.setItem("redirectAfterLogin", currentUrl);
     window.location.href = "/login.html";
+    return;
+  } else {
+    console.log("Valid session found:", sessionData);
+  }
+
+  // Initialize variables
+  if (!initializeVariables()) {
     return;
   }
 
-  // Get DOM elements
-  const seatClass = document.getElementById("seatClass");
-  const numberOfSeats = document.getElementById("numberOfSeats");
-  const decrementBtn = document.getElementById("decrementSeats");
-  const incrementBtn = document.getElementById("incrementSeats");
+  // Fetch train details and price
+  await fetchTrainDetailsAndPrice();
 
-  console.log("Elements:", {
-    seatClass,
-    numberOfSeats,
-    decrementBtn,
-    incrementBtn,
-  }); // Debug log
+  // Setup all event handlers
+  // This function is replaced by setupAllHandlers() above
 
-  // Setup increment button
-  incrementBtn.onclick = () => {
-    let count = parseInt(numberOfSeats.value) || 1;
-    if (count < 6) {
-      count++;
-      numberOfSeats.value = count;
-      updatePriceDetails();
-      decrementBtn.disabled = false;
-      incrementBtn.disabled = count >= 6;
-    }
-  };
+  // Setup all event handlers
+  setupAllHandlers();
 
-  // Setup decrement button
-  decrementBtn.onclick = () => {
-    let count = parseInt(numberOfSeats.value) || 1;
-    if (count > 1) {
-      count--;
-      numberOfSeats.value = count;
-      updatePriceDetails();
-      incrementBtn.disabled = false;
-      decrementBtn.disabled = count <= 1;
-    }
-  };
+  // This is now handled by the global updatePriceDetails() function
 
-  // Setup seat class change handler
-  seatClass.onchange = updatePriceDetails;
+  // Get URL parameters with default values
+  const fromStation = state.urlParams.get("from") || "Not specified";
+  const toStation = state.urlParams.get("to") || "Not specified";
+  const date = state.urlParams.get("date") || "Not specified";
 
-  // Prevent manual input in number field
-  numberOfSeats.onkeydown = (e) => e.preventDefault();
+  console.log("URL Parameters:", { fromStation, toStation, date });
 
-  // Initial setup
-  numberOfSeats.value = 1;
-  decrementBtn.disabled = true; // Disable decrement at start since count is 1
-  updatePriceDetails();
+  // Initialize booking functionality with state values
+  initializeBookingPage(state.trainId, fromStation, toStation, date);
 
-  function updatePriceDetails() {
-    console.log("Updating prices..."); // Debug log
-
-    const seatCount = parseInt(numberOfSeats.value) || 1;
-    const currentClass = seatClass.value;
-    const baseFare = baseFares[currentClass] * seatCount;
-    const gst = Math.round(baseFare * 0.05);
-    const convenienceFee = 30 * seatCount;
-    const totalAmount = baseFare + gst + convenienceFee;
-
-    console.log("Calculations:", {
-      seatCount,
-      currentClass,
-      baseFare,
-      gst,
-      convenienceFee,
-      totalAmount,
-    }); // Debug log
-
-    // Update price displays
-    try {
-      document.getElementById("baseFare").textContent = `₹${baseFare}`;
-      document.getElementById("gst").textContent = `₹${gst}`;
-      document.getElementById(
-        "convenienceFee"
-      ).textContent = `₹${convenienceFee}`;
-      document.getElementById("totalAmount").textContent = `₹${totalAmount}`;
-    } catch (error) {
-      console.error("Error updating price displays:", error);
-    }
-  }
-
-  // Initial price calculation
-  if (seatClass && numberOfSeats) {
-    seatClass.addEventListener("change", updatePriceDetails);
-    updatePriceDetails();
-  }
-
-  // Get train details from URL parameters
-  const urlParams = new URLSearchParams(window.location.search);
-  const trainId = urlParams.get("trainId");
-  const fromStation = urlParams.get("from");
-  const toStation = urlParams.get("to");
-  const date = urlParams.get("date");
-
-  // Initialize booking functionality
-  initializeBookingPage(trainId, fromStation, toStation, date);
-
-  // Display user info in navbar
-  const userData = getUserData();
-  if (userData && userData.username) {
-    const userInfo = document.getElementById("userInfo");
-    if (userInfo) {
-      userInfo.textContent = userData.username;
-    }
+  // Update header UI
+  if (window.headerUI) {
+    window.headerUI.update();
   }
 
   // Initialize form handling
@@ -135,68 +236,51 @@ function initializeBookingPage(trainId, fromStation, toStation, date) {
 }
 
 function displayTrainDetails(trainId, fromStation, toStation, date) {
+  console.log("Fetching train details for:", {
+    trainId,
+    fromStation,
+    toStation,
+    date,
+  });
+
   fetch(`/api/trains/${trainId}`)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
     .then((train) => {
+      console.log("Received train data:", train);
+
+      const trainName = train?.trainName || "Unknown Train";
+      const trainNumber = train?.trainNumber || "";
+      const displayFromStation = fromStation || "Not specified";
+      const displayToStation = toStation || "Not specified";
+      const displayDate = date || "Not specified";
+
       document.getElementById("trainDetails").innerHTML = `
-                <h3>${train.name} (${train.number})</h3>
-                <p>From: ${fromStation} - To: ${toStation}</p>
-                <p>Date: ${date}</p>
+                <h3>${trainName} ${trainNumber ? `(${trainNumber})` : ""}</h3>
+                <p>From: ${displayFromStation} - To: ${displayToStation}</p>
+                <p>Date: ${displayDate}</p>
             `;
     })
-    .catch((error) => console.error("Error:", error));
+    .catch((error) => {
+      console.error("Error fetching train details:", {
+        error,
+        trainId,
+        fromStation,
+        toStation,
+        date,
+      });
+      document.getElementById("trainDetails").innerHTML = `
+                <h3>Error loading train details</h3>
+                <p>Please try refreshing the page</p>
+            `;
+    });
 }
 
-function initializePriceCalculator() {
-  const seatClass = document.getElementById("seatClass");
-  const numberOfSeats = document.getElementById("numberOfSeats");
-  const decrementBtn = document.getElementById("decrementSeats");
-  const incrementBtn = document.getElementById("incrementSeats");
-
-  function updatePriceDetails() {
-    const seatCount = parseInt(numberOfSeats.value);
-    const baseFare = baseFares[seatClass.value] * seatCount;
-    const gst = baseFare * 0.05;
-    const convenienceFee = 30 * seatCount;
-    const totalAmount = baseFare + gst + convenienceFee;
-
-    document.getElementById("baseFare").textContent = `₹${baseFare}`;
-    document.getElementById("gst").textContent = `₹${gst}`;
-    document.getElementById(
-      "convenienceFee"
-    ).textContent = `₹${convenienceFee}`;
-    document.getElementById("totalAmount").textContent = `₹${totalAmount}`;
-
-    // Update button states
-    decrementBtn.disabled = seatCount <= 1;
-    incrementBtn.disabled = seatCount >= 6;
-  }
-
-  function handleIncrement() {
-    const currentValue = parseInt(numberOfSeats.value);
-    if (currentValue < 6) {
-      numberOfSeats.value = currentValue + 1;
-      updatePriceDetails();
-    }
-  }
-
-  function handleDecrement() {
-    const currentValue = parseInt(numberOfSeats.value);
-    if (currentValue > 1) {
-      numberOfSeats.value = currentValue - 1;
-      updatePriceDetails();
-    }
-  }
-
-  seatClass.addEventListener("change", updatePriceDetails);
-  incrementBtn.addEventListener("click", handleIncrement);
-  decrementBtn.addEventListener("click", handleDecrement);
-
-  // Prevent manual input
-  numberOfSeats.addEventListener("keydown", (e) => e.preventDefault());
-
-  updatePriceDetails(); // Initial calculation
-}
+// This is now handled by global state management and event handlers
 
 function initializePaymentHandlers() {
   const paymentMethods = document.querySelectorAll(
@@ -290,7 +374,7 @@ function validatePaymentForm(paymentMethod) {
 }
 
 function collectBookingDetails() {
-  const userData = getUserData();
+  const userData = session.getUserData();
   return {
     userId: userData.userId,
     trainId: new URLSearchParams(window.location.search).get("trainId"),
@@ -299,6 +383,7 @@ function collectBookingDetails() {
     totalAmount: document
       .getElementById("totalAmount")
       .textContent.replace("₹", ""),
+    basePrice: state.basePrice,
     paymentMethod: document.querySelector('input[name="paymentMethod"]:checked')
       .value,
   };

@@ -5,6 +5,7 @@ const session = require("express-session");
 const User = require("./models/User");
 const userRoutes = require("./routes/userRoutes");
 const trainRoutes = require("./routes/trainRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -58,6 +59,7 @@ app.use('/react', express.static(path.join(__dirname, '..', 'frontend')));
 // API routes
 app.use("/api/users", userRoutes);
 app.use("/api/trains", trainRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // Basic route
 app.get("/", (req, res) => {

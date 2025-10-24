@@ -43,14 +43,26 @@ document.addEventListener("DOMContentLoaded", function () {
           // Save session data first (if session helper available)
           if (typeof session !== "undefined" && session.saveSession) {
             try {
+              console.log("Saving session data:", data.user);
               session.saveSession(data.user);
+              const savedData = session.getUserData();
+              console.log("Verified saved session data:", savedData);
             } catch (e) {
               console.warn("Failed to save session locally", e);
             }
           }
 
-          // Then redirect based on user role
-          window.location.href = data.redirectUrl;
+          // Check if there's a stored redirect URL
+          const redirectUrl = localStorage.getItem("redirectAfterLogin");
+          if (redirectUrl) {
+            // Clear the stored URL
+            localStorage.removeItem("redirectAfterLogin");
+            // Redirect to the stored URL
+            window.location.href = redirectUrl;
+          } else {
+            // Otherwise redirect based on user role
+            window.location.href = data.redirectUrl;
+          }
         } else {
           alert(data.message || "Login failed. Please try again.");
         }
