@@ -52,6 +52,9 @@ const db = async () => {
 // Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
+// Serve the lightweight React frontend folder for the About page
+app.use('/react', express.static(path.join(__dirname, '..', 'frontend')));
+
 // API routes
 app.use("/api/users", userRoutes);
 app.use("/api/trains", trainRoutes);
@@ -59,6 +62,11 @@ app.use("/api/trains", trainRoutes);
 // Basic route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Serve the React-based About page
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 });
 
 app.get("/users", async (req, res) => {
