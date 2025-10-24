@@ -50,13 +50,24 @@ const db = async () => {
   }
 };
 
-// Serve static files
+// Serve static files for main site
 app.use(express.static(path.join(__dirname, "public")));
+
+// Serve React app's static files for /about route
+app.use(
+  "/about",
+  express.static(path.join(__dirname, "..", "frontend", "build"))
+);
 
 // API routes
 app.use("/api/users", userRoutes);
 app.use("/api/trains", trainRoutes);
 app.use("/api/bookings", bookingRoutes);
+
+// Route to serve React app for /about
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "frontend", "build", "index.html"));
+});
 
 // Basic route
 app.get("/", (req, res) => {
